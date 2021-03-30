@@ -1,0 +1,14 @@
+Drop Table Course;
+Drop Table Section;
+Drop Table Department;
+Drop Table College;
+Drop Table Login;
+Drop Table Advisor;
+Drop Table Graduate;
+Drop Table Undergraduate;
+Drop Table Student;
+Drop Table Majors;
+Drop Table Minors;
+Drop Table Admin;
+Drop Table Enrolled;
+Drop Table Message;
