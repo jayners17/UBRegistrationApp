@@ -12,8 +12,7 @@ CREATE TABLE Section (
   SName varchar(20),
   Semester varchar(20),
   Seats_Left INT(10),
-  PRIMARY KEY (SName),
-  FOREIGN KEY (CName)
+  PRIMARY KEY (SName)
 );
 CREATE TABLE Department (
   DName varchar(20),
