@@ -31,7 +31,7 @@ CREATE TABLE LOGIN (
   ID_Number INT(10),
   Username varchar(20) NOT NULL UNIQUE,
   Password varchar(20),
-  PRIMARY KEY (ID_Number),
+  PRIMARY KEY (ID_Number)
 );
 CREATE TABLE ADVISOR (
   ID_Number INT(10),
