@@ -50,9 +50,9 @@ INSERT into Enrolled values
 (000003,'Physics I','Physics',5);
 
 INSERT into Message values
-("Hello",2021-03-12 11:45:37,'Advisor1','Student1'),
-("Homework",2021-04-24 15:09:51,'Advisor2','Student2'),
-("Exam",2021-03-12 09:34:12,'Advisor3','Student3');
+("Hello",'2021-03-12 11:45:37','Advisor1','Student1'),
+("Homework",'2021-04-24 15:09:51','Advisor2','Student2'),
+("Exam",'2021-03-12 09:34:12','Advisor3','Student3');
 
 INSERT into Graduate values
 (000003,'PhD');
