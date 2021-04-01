@@ -59,7 +59,7 @@ INSERT into Graduate values
 
 INSERT into Undergraduate values
 (000001,'Junior'),
-(000002,'Junior')
+(000002,'Junior');
 
 INSERT into Majors values
 (000001,'Computer Science'),
