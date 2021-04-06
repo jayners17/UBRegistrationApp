@@ -15,24 +15,24 @@ INSERT into Login values
 (700003,'Admin3','Password3');
 
 INSERT into Advisor values
-(007001,'Mr.Advisor1','Department_X'),
-(007002,'Ms.Advisor2','Department_Y'),
-(007003,'Dr.Advisor3','Department_Z');
+(007001,'Mr.Advisor1','CPSC'),
+(007002,'Ms.Advisor2','MATH'),
+(007003,'Dr.Advisor3','CPEG');
 
 INSERT into Department values
-('Department_X','University of Bridgeport',007001),
-('Department_Y','Sacred Heart University',007002),
-('Department_Z','University of Connecticut',007003);
+('CPSC','University of Bridgeport',007001),
+('MATH','Sacred Heart University',007002),
+('CPEG','University of Connecticut',007003);
 
 INSERT into Course values
-('Advanced Database',301,'Professor_X',3,'Department_X'),
-('Prob & Stats',302,'Professor_Y',4,'Department_Y'),
-('Physics I',303,'Professor_Z',5,'Department_Z');
+('Advanced Database',301,'Professor Smith',3,'CPSC'),
+('Prob & Stats',302,'Professor A',4,'MATH'),
+('Physics I',303,'Professor Z',5,'CPEG');
 
 INSERT into Section values
-('Advanced Database','Computer Science','Fall',10),
-('Prob & Stats','Math','Fall',7),
-('Physics I','Physics','Spring',8);
+('Advanced Database','111A','Fall',10),
+('Prob & Stats','HONORS-322','Fall',7),
+('Physics I','513B','Spring',8);
 
 INSERT into Student values
 (000001,'Romeo',007001),
@@ -45,9 +45,9 @@ INSERT into Admin values
 (700003,'Admin_C');
 
 INSERT into Enrolled values
-(000001,'Advanced Database','Computer Science',3),
-(000002,'Prob & Stats','Math',4),
-(000003,'Physics I','Physics',5);
+(000001,'Advanced Database','111A',3),
+(000002,'Prob & Stats','HONORS-322',4),
+(000003,'Physics I','513B',5);
 
 INSERT into Message values
 ("Hello",'2021-03-12 11:45:37','Advisor1','Student1'),
@@ -59,11 +59,13 @@ INSERT into Graduate values
 
 INSERT into Undergraduate values
 (000001,'Junior'),
-(000002,'Junior');
+(000002,'Junior'),
+(000003,'Junior');
 
 INSERT into Majors values
 (000001,'Computer Science'),
-(000002,'Computer Science');
+(000002,'Computer Science'),
+(000003,'Math');
 
 INSERT into Minors values
 (000001,'Math'),
