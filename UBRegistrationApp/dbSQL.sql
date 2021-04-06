@@ -34,9 +34,9 @@ Where Not Exists (Select *
 				  From Student
 				  Where Advisor.Adv_ID_Num = Student.Adv_ID_Number);
 
-/* List all courses taught by Ausif Mahmood */
+/* List all courses taught by Professor Smith */
 Create View Mahmood_Courses as
 Select DName, CName, Room_Num, Num_Credits
 From Course
-Where Professor = "Ausif Mahmood"
+Where Professor = "Professor Smith"
 Order By DName Asc, CName Asc;                   
