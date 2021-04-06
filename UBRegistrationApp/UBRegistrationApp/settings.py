@@ -25,7 +25,7 @@ SECRET_KEY = '9514b8a2-60ba-44f4-90fe-8a13f46d0dca'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['adb-jayne-romeo.uc.r.appspot.com', '127.0.0.1']
+ALLOWED_HOSTS = ['adb-jayne-romeo.uc.r.appspot.com', '127.0.0.1', 'http://localhost:63815/', 'localhost']
 
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS

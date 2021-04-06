@@ -11,8 +11,10 @@ from app import forms, views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('contact/', views.contact, name='contact'),
-    path('about/', views.about, name='about'),
+    path('advisor/', views.advisor, name='advisor'),
+    path('student/', views.student, name='student'),
+    path('admin1/', views.admin1, name='admin1'),
+    
     path('login/',
          LoginView.as_view
          (
@@ -27,4 +29,5 @@ urlpatterns = [
          name='login'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('admin/', admin.site.urls),
+    
 ]

@@ -18,27 +18,40 @@ def home(request):
         }
     )
 
-def contact(request):
-    """Renders the contact page."""
+def advisor(request):
+    """Renders the advisor page."""
     assert isinstance(request, HttpRequest)
     return render(
         request,
-        'app/contact.html',
+        'app/advisor.html',
         {
-            'title':'Contact',
-            'message':'Your contact page.',
+            'title':'Advisor Page',
+            'message':'Your application description page.',
             'year':datetime.now().year,
         }
     )
 
-def about(request):
-    """Renders the about page."""
+def student(request):
+    """Renders the student page."""
     assert isinstance(request, HttpRequest)
     return render(
         request,
-        'app/about.html',
+        'app/student.html',
         {
-            'title':'About',
+            'title':'Student Page',
+            'message':'Your application description page.',
+            'year':datetime.now().year,
+        }
+    )
+
+def admin1(request):
+    """Renders the admin page."""
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/admin1.html',
+        {
+            'title':'Admin Page',
             'message':'Your application description page.',
             'year':datetime.now().year,
         }
