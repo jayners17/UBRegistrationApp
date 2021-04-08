@@ -65,7 +65,7 @@ CREATE TABLE Enrolled (
   FOREIGN KEY (SName) REFERENCES Section (SName)
 );
 CREATE TABLE Message (
-  MEssage_Text TEXT,
+  Message_Text TEXT,
   Time_Sent DATETIME,
   To_User varchar(50) NOT NULL,
   From_User varchar(50) NOT NULL,
