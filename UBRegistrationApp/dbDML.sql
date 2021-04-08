@@ -19,6 +19,16 @@ INSERT into Advisor values
 (007002,'Ms.Advisor2','MATH'),
 (007003,'Dr.Advisor3','CPEG');
 
+INSERT into Student values
+(000001,'Romeo',007001),
+(000002,'Jayne',007002),
+(000003,'John',007003);
+
+INSERT into Admin values
+(700001,'Admin_A'),
+(700002,'Admin_B'),
+(700003,'Admin_C');
+
 INSERT into Department values
 ('CPSC','University of Bridgeport',007001),
 ('MATH','Sacred Heart University',007002),
@@ -34,15 +44,7 @@ INSERT into Section values
 ('Prob & Stats','HONORS-322','Fall',7),
 ('Physics I','513B','Spring',8);
 
-INSERT into Student values
-(000001,'Romeo',007001),
-(000002,'Jayne',007002),
-(000003,'John',007003);
 
-INSERT into Admin values
-(700001,'Admin_A'),
-(700002,'Admin_B'),
-(700003,'Admin_C');
 
 INSERT into Enrolled values
 (000001,'Advanced Database','111A',3),
