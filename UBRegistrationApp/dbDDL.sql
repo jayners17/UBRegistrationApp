@@ -8,23 +8,23 @@ CREATE TABLE Login (
   Password varchar(50) NOT NULL,
   PRIMARY KEY (ID_Number)
 );
+
+CREATE TABLE Department (
+  DName varchar(50) NOT NULL UNIQUE,
+  Name varchar(50) NOT NULL,
+  PRIMARY KEY (DName),
+  FOREIGN KEY (Name) REFERENCES College (Name)
+);
+
 CREATE TABLE Advisor (
   ID_Number INT NOT NULL,
   Name varchar(50) NOT NULL,
   DName varchar(50) NOT NULL,
   PRIMARY KEY (ID_Number),
-  FOREIGN KEY (ID_Number) REFERENCES Login (ID_Number)
+  FOREIGN KEY (ID_Number) REFERENCES Login (ID_Number),
+  FOREIGN KEY (DName) REFERENCES Department (DName)
 );
-CREATE TABLE Department (
-  DName varchar(50) NOT NULL UNIQUE,
-  Name varchar(50) NOT NULL,
-  Adv_ID_Num INT NOT NULL,
-  PRIMARY KEY (DName),
-  FOREIGN KEY (Name) REFERENCES College (Name),
-  FOREIGN KEY (Adv_ID_Num) REFERENCES Advisor (ID_Number)
-);
-ALTER TABLE Advisor
-ADD FOREIGN KEY (DName) REFERENCES Department (DName);
+
 CREATE TABLE Course (
   CName varchar(50) NOT NULL UNIQUE,
   Room_Num varchar(50),
@@ -76,7 +76,7 @@ CREATE TABLE Graduate (
   ID_Number INT NOT NULL,
   Degree_Program varchar(50),
   PRIMARY KEY (ID_Number),
-  FOREIGN KEY (ID_Number)  REFERENCES Student (ID_Number)
+  FOREIGN KEY (ID_Number) REFERENCES Student (ID_Number)
 );
 CREATE TABLE Undergraduate (
   ID_Number INT NOT NULL,
@@ -87,12 +87,12 @@ CREATE TABLE Undergraduate (
 CREATE TABLE Majors (
   ID_Number INT NOT NULL,
   Major_Name varchar(50),
-  PRIMARY KEY (Major_Name),
+  PRIMARY KEY (ID_Number),
   FOREIGN KEY (ID_Number) REFERENCES Undergraduate (ID_Number)
 );
 CREATE TABLE Minors (
   ID_Number INT NOT NULL,
   Minor_Name varchar(50),
-  PRIMARY KEY (Minor_Name),
+  PRIMARY KEY (ID_Number),
   FOREIGN KEY (ID_Number) REFERENCES Undergraduate (ID_Number)
 );
