@@ -32,7 +32,7 @@ Select ID_Number, Name, DName
 From Advisor
 Where Not Exists (Select * 
 				  From Student
-				  Where Advisor.Adv_ID_Num = Student.Adv_ID_Number);
+				  Where Advisor.ID_Number = Student.Adv_ID_Num);
 
 /* List all courses taught by Professor Smith */
 Create View Mahmood_Courses as
