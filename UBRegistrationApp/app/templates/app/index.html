@@ -4,5 +4,16 @@
 
 <h2>{{ title }}.</h2>
 <h3>{{ message }}</h3>
+<br/>
 
+<div>
+    <form method="post"> 
+        {%csrf_token%}
+        {{ form.as_p }} 
+        <br/>
+    <input type = "submit" value = "Start Transaction"> 
+    </form> 
+</div>
+
+    
 {% endblock %}
