@@ -6,6 +6,18 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 
+ADVISOR_MENU = [('View Students', 'View Students'), ('View Courses', 'View Courses'), 
+                ('View Messages', 'View Messages'), ('Send Message', 'Send Message'),
+                ('View Login Information','View Login Information'), ('Change Login Information','Change Login Information')]
+
+STUDENT_MENU = [('View Courses', 'View Courses'), ('Course Sign Up', 'Course Sign Up'),
+                ('View Messages', 'View Messages'), ('Send Message', 'Send Message'),
+                ('View Login Information','View Login Information'), ('Change Login Information','Change Login Information')]
+
+ADMIN_MENU = [('View Users', 'View Users'), ('Change User Information', 'Change User Information'), 
+              ('View Courses', 'View Courses'), ('Change Courses', 'Change Courses'), 
+                ('View Messages', 'View Messages')]
+
 class BootstrapAuthenticationForm(AuthenticationForm):
     """Authentication form which uses boostrap CSS."""
     username = forms.CharField(max_length=254,
@@ -20,3 +32,12 @@ class BootstrapAuthenticationForm(AuthenticationForm):
 class LoginForm(forms.Form):
     inputUser = forms.CharField(label='Username', required=True)
     inputPass = forms.CharField(label='Password', required=True)
+
+class AdvisorMenuForm(forms.Form):
+    choice = forms.ChoiceField(label='Options Menu', choices=ADVISOR_MENU, required=True)
+
+class StudentMenuForm(forms.Form):
+    choice = forms.ChoiceField(label='Options Menu', choices=STUDENT_MENU, required=True)
+
+class AdminMenuForm(forms.Form):
+    choice = forms.ChoiceField(label='Options Menu', choices=ADMIN_MENU, required=True)
