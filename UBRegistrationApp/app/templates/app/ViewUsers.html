@@ -1,0 +1,25 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}</h2>
+<br/>
+
+    <table border="1" cellpadding="4">
+    <tr>
+        <th style="text-align:left">ID Number</th>
+        <th style="text-align:left">Username</th>
+        <th style="text-align:left">Password</th>
+
+    </tr>
+    {% for item in query_results %}
+    <tr> 
+         <td style="text-align:left">{{ item.ID_Number }}</td>
+         <td style="text-align:left">{{ item.Username }}</td>
+         <td style="text-align:left">{{ item.Password }}</td>
+
+    </tr>
+    {% endfor %}
+    </table>
+
+{% endblock %}

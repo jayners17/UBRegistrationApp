@@ -63,6 +63,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="app\templates\app\admin1.html" />
+    <Content Include="app\templates\app\viewCourses.html" />
+    <Content Include="app\templates\app\viewStudents.html" />
+    <Content Include="app\templates\app\viewUsers.html" />
     <Content Include="requirements.txt" />
     <Content Include="db.sqlite3" />
     <Content Include="app\static\app\content\bootstrap.css" />

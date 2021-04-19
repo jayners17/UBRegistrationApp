@@ -10,13 +10,16 @@ ADVISOR_MENU = [('View Students', 'View Students'), ('View Courses', 'View Cours
                 ('View Messages', 'View Messages'), ('Send Message', 'Send Message'),
                 ('View Login Information','View Login Information'), ('Change Login Information','Change Login Information')]
 
-STUDENT_MENU = [('View Courses', 'View Courses'), ('Course Sign Up', 'Course Sign Up'),
+STUDENT_MENU = [('View Courses', 'View Courses'), ('View Enrolled Courses', 'View Enrolled Courses'), 
+                ('Course Sign Up', 'Course Sign Up'),
                 ('View Messages', 'View Messages'), ('Send Message', 'Send Message'),
                 ('View Login Information','View Login Information'), ('Change Login Information','Change Login Information')]
 
 ADMIN_MENU = [('View Users', 'View Users'), ('Change User Information', 'Change User Information'), 
               ('View Courses', 'View Courses'), ('Change Courses', 'Change Courses'), 
                 ('View Messages', 'View Messages')]
+
+CHANGE_MENU = [('Update', 'Update'), ('Delete', 'Delete'), ('Add', 'Add')]
 
 class BootstrapAuthenticationForm(AuthenticationForm):
     """Authentication form which uses boostrap CSS."""
@@ -41,3 +44,6 @@ class StudentMenuForm(forms.Form):
 
 class AdminMenuForm(forms.Form):
     choice = forms.ChoiceField(label='Options Menu', choices=ADMIN_MENU, required=True)
+
+class ChangeTable(forms.Form):
+    choice = forms.ChoiceField(label='Options Menu', choices=CHANGE_MENU, required=True)

@@ -14,7 +14,10 @@ urlpatterns = [
     path('advisor/', views.advisor, name='advisor'),
     path('student/', views.student, name='student'),
     path('admin1/', views.admin1, name='admin1'),
-    
+    path('viewStudents/', views.viewStudents, name='viewStudents'),
+    path('viewCourses/', views.viewCourses, name='viewCourses'),
+    path('viewUsers/', views.viewUsers, name='viewUsers'),
+
     path('login/',
          LoginView.as_view
          (

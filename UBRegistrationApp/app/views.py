@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from app import forms
 from .forms import *
+from .models import *
 
 def home(request):
     """Renders the home page."""
@@ -17,11 +18,34 @@ def home(request):
             # Process the data in form.cleaned_data
             inUser = form.cleaned_data['inputUser']
             inPass = form.cleaned_data['inputPass']
-
             
-            # Check if user and pass match a database login entry
-            # Check login role and redirect to correct page
+
+            try:
+                query = Login.objects.filter(Username = inUser, Password = inPass)
+                id_num = query[0].ID_Number
+            except:
+                text = "Username and/or password are incorrect..."
+
+            try:
+                tryStudent = Student.objects.filter(ID_Number = id_num)
+                return render(request,"app/student.html",{'id': id_num})
+            except:
+                print('Not a student')
+
+            try:
+                tryAdvisor = Advisor.objects.filter(ID_Number = id_num)
+                return render(request,"app/advisor.html",{'id': id_num})
+            except:
+                print('Not an advisor')
+
+            try:
+                tryAdmin = Admin.objects.filter(ID_Number = id_num)
+                return render(request,"app/admin1.html",{'id': id_num})
+            except:
+                print('Not an Admin')
+            
     else:
+        text = ""
         form = LoginForm() # An unbound form
     return render(
         request,
@@ -30,7 +54,8 @@ def home(request):
             'title':'Home Page',
             'message':'',
             'year':datetime.now().year,
-            'form': form
+            'form': form,
+            'text': text,
         }
     )
 
@@ -101,5 +126,53 @@ def admin1(request):
             'title':'Admin Page',
             'message':'',
             'year':datetime.now().year,
+        }
+    )
+
+def viewStudents(request):
+    """Renders the viewStudents page."""
+    assert isinstance(request, HttpRequest)
+
+    cursor = connection.cursor()
+    cursor.execute('''select Student.ID_Number, Student.Name, Advisor.Name 
+                    from Student, Advisor, Majors, Minors, Graduate, Undergraduate 
+                    where Student.Adv_ID_Num = Advisor.ID_Number''')
+    query_results = cursor.fetchall()
+
+    return render(
+        request,
+        'app/viewStudents.html',
+        {
+            'title':'View Students',
+            'year':datetime.now().year,
+            'query_results':query_results,
+        }
+    )
+
+def viewCourses(request):
+    """Renders the viewCourses page."""
+    assert isinstance(request, HttpRequest)
+    query_results = Courses_List.objects.all()
+    return render(
+        request,
+        'app/viewCourses.html',
+        {
+            'title':'View Courses',
+            'year':datetime.now().year,
+            'query_results':query_results,
+        }
+    )
+
+def viewUsers(request):
+    """Renders the viewUsers page."""
+    assert isinstance(request, HttpRequest)
+    query_results = Login.objects.all()
+    return render(
+        request,
+        'app/viewCourses.html',
+        {
+            'title':'View Users',
+            'year':datetime.now().year,
+            'query_results':query_results,
         }
     )
