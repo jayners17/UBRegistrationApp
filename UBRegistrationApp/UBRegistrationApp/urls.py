@@ -11,9 +11,9 @@ from app import forms, views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('advisor/', views.advisor, name='advisor'),
-    path('student/', views.student, name='student'),
-    path('admin1/', views.admin1, name='admin1'),
+    path('advisor/<id>/', views.advisor, name='advisor'),
+    path('student/<id>/', views.student, name='student'),
+    path('admin1/<id>/', views.admin1, name='admin1'),
     path('viewStudents/', views.viewStudents, name='viewStudents'),
     path('viewCourses/', views.viewCourses, name='viewCourses'),
     path('viewUsers/', views.viewUsers, name='viewUsers'),

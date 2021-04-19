@@ -5,6 +5,7 @@ Definition of views.
 from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpRequest
+from django.shortcuts import redirect
 from app import forms
 from .forms import *
 from app import models
@@ -20,31 +21,35 @@ def home(request):
             # Process the data in form.cleaned_data
             inUser = form.cleaned_data['inputUser']
             inPass = form.cleaned_data['inputPass']
-            
+            inRole = form.cleaned_data['role']
+
 
             try:
                 query = Login.objects.filter(username = inUser, password = inPass)
                 id_num = query[0].id_number
+
             except:
                 text = "Username and/or password are incorrect..."
 
-            try:
-                tryStudent = Student.objects.filter(id_number = id_num)
-                return render(request,"app/student.html",{'id': id_num})
-            except:
-                print('Not a student')
-
-            try:
-                tryAdvisor = Advisor.objects.filter(id_number = id_num)
-                return render(request,"app/advisor.html",{'id': id_num})
-            except:
-                print('Not an advisor')
-
-            try:
-                tryAdmin = Admin.objects.filter(id_number = id_num)
-                return render(request,"app/admin1.html",{'id': id_num})
-            except:
-                print('Not an Admin')
+            if (inRole == "Student"):
+                try:
+                    tryS = Student.objects.filter(id_number = id_num)
+                    return redirect('/student/'+ str(id_num) + '/')
+                except:
+                    text = "Role is incorrect..."
+            elif (inRole == 'Advisor'):
+                try:
+                    tryA = Advisor.objects.filter(id_number = id_num)
+                    return redirect('/advisor/'+ str(id_num) + '/')
+                except:
+                    text = "Role is incorrect..."
+            elif (inRole == 'Admin'):
+                try:
+                    tryAd = Admin.objects.filter(id_number = id_num)
+                    return redirect('/admin1/'+ str(id_num) + '/')
+                except:
+                    text = "Role is incorrect..."
+                
             
     else:
         text = ""
