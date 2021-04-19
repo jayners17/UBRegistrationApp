@@ -19,15 +19,15 @@
     </tr>
     {% for item in query_results %}
     <tr> 
-         <td style="text-align:left">{{ item.DName }}</td>
-         <td style="text-align:left">{{ item.CName }}</td>
-         <td style="text-align:left">{{ item.SName }}</td>
-        <td style="text-align:left">{{ item.Professor }}</td>
-        <td style="text-align:left">{{ item.Room_Num }}</td>
-        <td style="text-align:left">{{ item.Num_Credits }}</td>
-        <td style="text-align:left">{{ item.Semester }}</td>
-        <td style="text-align:left">{{ item.Seats_Left }}</td>
-        <td style="text-align:left">{{ item.Name }}</td>
+         <td style="text-align:left">{{ item.0 }}</td>
+         <td style="text-align:left">{{ item.1 }}</td>
+         <td style="text-align:left">{{ item.2 }}</td>
+        <td style="text-align:left">{{ item.3 }}</td>
+        <td style="text-align:left">{{ item.4 }}</td>
+        <td style="text-align:left">{{ item.5 }}</td>
+        <td style="text-align:left">{{ item.6 }}</td>
+        <td style="text-align:left">{{ item.7 }}</td>
+        <td style="text-align:left">{{ item.8 }}</td>
     </tr>
     {% endfor %}
     </table>

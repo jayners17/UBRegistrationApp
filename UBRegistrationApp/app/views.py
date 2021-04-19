@@ -7,8 +7,10 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from app import forms
 from .forms import *
+from app import models
 from .models import *
 
+#complete
 def home(request):
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
@@ -21,25 +23,25 @@ def home(request):
             
 
             try:
-                query = Login.objects.filter(Username = inUser, Password = inPass)
-                id_num = query[0].ID_Number
+                query = Login.objects.filter(username = inUser, password = inPass)
+                id_num = query[0].id_number
             except:
                 text = "Username and/or password are incorrect..."
 
             try:
-                tryStudent = Student.objects.filter(ID_Number = id_num)
+                tryStudent = Student.objects.filter(id_number = id_num)
                 return render(request,"app/student.html",{'id': id_num})
             except:
                 print('Not a student')
 
             try:
-                tryAdvisor = Advisor.objects.filter(ID_Number = id_num)
+                tryAdvisor = Advisor.objects.filter(id_number = id_num)
                 return render(request,"app/advisor.html",{'id': id_num})
             except:
                 print('Not an advisor')
 
             try:
-                tryAdmin = Admin.objects.filter(ID_Number = id_num)
+                tryAdmin = Admin.objects.filter(id_number = id_num)
                 return render(request,"app/admin1.html",{'id': id_num})
             except:
                 print('Not an Admin')
@@ -59,7 +61,7 @@ def home(request):
         }
     )
 
-def advisor(request):
+def advisor(request, id):
     """Renders the advisor page."""
     assert isinstance(request, HttpRequest)
     if request.method == 'POST': # If the form has been submitted...
@@ -68,8 +70,18 @@ def advisor(request):
             # Process the data in form.cleaned_data
             option = form.cleaned_data['choice']
 
-            
-            # redirect to page based on choice
+            if (option == 'View Students'):
+                return render(request,"app/viewStudents.html",{}) #Not Done
+            elif (option == 'View Courses'):
+                return render(request,"app/viewCourses.html",{}) #Done
+            elif (option == 'View Messages'):
+                print("") #need to add
+            elif (option == 'Send Message'):
+                print("") #need to add
+            elif (option == 'View Login Information'):
+                print("") #need to add
+            elif (option == 'Change Login Information'):
+                print("") #need to add
     else:
         form = AdvisorMenuForm() # An unbound form
     return render(
@@ -83,7 +95,7 @@ def advisor(request):
         }
     )
 
-def student(request):
+def student(request, id):
     """Renders the student page."""
     assert isinstance(request, HttpRequest)
     if request.method == 'POST': # If the form has been submitted...
@@ -106,7 +118,7 @@ def student(request):
         }
     )
 
-def admin1(request):
+def admin1(request, id):
     """Renders the admin page."""
     assert isinstance(request, HttpRequest)
     if request.method == 'POST': # If the form has been submitted...
@@ -149,10 +161,19 @@ def viewStudents(request):
         }
     )
 
+
+#Complete
 def viewCourses(request):
     """Renders the viewCourses page."""
     assert isinstance(request, HttpRequest)
-    query_results = Courses_List.objects.all()
+    
+    cursor = connection.cursor()
+    cursor.execute('''Select Department.DName, Course.CName, SName, Professor, Room_Num, Num_Credits, Semester, Seats_Left, College.Name
+        From Course, Section, Department, College
+        Where Section.CName = Course.CName AND Course.DName = Department.DName AND College.Name = Department.Name
+        Order By Department.DName Asc, Course.CName Asc, SName Asc''')
+    query_results = cursor.fetchall()
+
     return render(
         request,
         'app/viewCourses.html',
