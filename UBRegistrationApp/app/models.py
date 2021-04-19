@@ -91,8 +91,8 @@ class Majors(models.Model):
 class Message(models.Model):
     message_text = models.TextField(db_column='Message_Text', blank=True, null=True)  # Field name made lowercase.
     time_sent = models.DateTimeField(db_column='Time_Sent', blank=True, null=True)  # Field name made lowercase.
-    to_user = models.ForeignKey(Login, models.DO_NOTHING, db_column='To_User')  # Field name made lowercase.
-    from_user = models.ForeignKey(Login, models.DO_NOTHING, db_column='From_User')  # Field name made lowercase.
+    to_user = models.ForeignKey(Login, models.DO_NOTHING, db_column='To_User',related_name='message_to')  # Field name made lowercase.
+    from_user = models.ForeignKey(Login, models.DO_NOTHING, db_column='From_User',related_name='message_from')  # Field name made lowercase.
 
     class Meta:
         managed = False
