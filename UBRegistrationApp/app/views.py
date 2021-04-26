@@ -10,6 +10,7 @@ from app import forms
 from .forms import *
 from app import models
 from .models import *
+from mysql.connector import connect, Error
 
 #complete
 def home(request):
@@ -78,10 +79,10 @@ def advisor(request, id):
             # Process the data in form.cleaned_data
             option = form.cleaned_data['choice']
 
-            if (option == 'View Students'):
-                return render(request,"app/viewStudents.html",{}) #Not Done
+            if (option == 'View Students'):     #DONE
+                return redirect('/viewStudents/')
             elif (option == 'View Courses'):
-                return render(request,"app/viewCourses.html",{}) #Done
+                return redirect('/viewCourses/')
             elif (option == 'View Messages'):
                 print("") #need to add
             elif (option == 'Send Message'):
@@ -153,11 +154,25 @@ def viewStudents(request):
     """Renders the viewStudents page."""
     assert isinstance(request, HttpRequest)
 
-    cursor = connection.cursor()
-    cursor.execute('''select Student.ID_Number, Student.Name, Advisor.Name 
-                    from Student, Advisor, Majors, Minors, Graduate, Undergraduate 
-                    where Student.Adv_ID_Num = Advisor.ID_Number''')
-    query_results = cursor.fetchall()
+    try:
+        with connect(
+            host="127.0.0.1",
+            user='root',
+            password='1234',
+            database='UBRegistrationDB',
+        ) as connection:
+            select_db_query = 'select DISTINCT Student.ID_Number, Student.Name, Advisor.Name, CASE '
+            select_db_query+= 'WHEN Graduate.ID_Number = Student.ID_Number THEN Graduate.Degree_Program '
+            select_db_query+= 'WHEN Undergraduate.ID_Number = Student.ID_Number THEN Undergraduate.Class_Year '
+            select_db_query+= 'ELSE \'\' END AS ClassText, Major_Name '
+            select_db_query+= 'from Advisor, Student, Majors, Undergraduate, Graduate '
+            select_db_query+= 'where Advisor.ID_Number = Student.Adv_ID_Num AND (Undergraduate.ID_Number = Student.ID_Number OR Graduate.ID_Number = Student.ID_Number) AND Majors.ID_Number = Student.ID_Number '
+            select_db_query+= 'Order By Student.ID_Number Asc'
+            with connection.cursor() as cursor:
+                cursor.execute(select_db_query)
+                query_results = cursor.fetchall()
+    except Error as e:
+        print(e)
 
     return render(
         request,
