@@ -79,9 +79,9 @@ def advisor(request, id):
             # Process the data in form.cleaned_data
             option = form.cleaned_data['choice']
 
-            if (option == 'View Students'):     #DONE
+            if (option == 'View Students'):     #Done
                 return redirect('/viewStudents/')
-            elif (option == 'View Courses'):
+            elif (option == 'View Courses'): #Done
                 return redirect('/viewCourses/')
             elif (option == 'View Messages'):
                 print("") #need to add
@@ -113,7 +113,7 @@ def student(request, id):
             # Process the data in form.cleaned_data
             option = form.cleaned_data['choice']
 
-            if (option == 'View Courses'):   
+            if (option == 'View Courses'):   #Done
                 return redirect('/viewCourses/')
             elif (option == 'View Enrolled Courses'):
                 print("") #need to add
@@ -136,6 +136,7 @@ def student(request, id):
             'title':'Student Page',
             'message':'',
             'year':datetime.now().year,
+            'form': form,
         }
     )
 
@@ -152,7 +153,7 @@ def admin1(request, id):
                 return redirect('')
             elif (option == 'Change User Information'):
                 return redirect('')
-            elif (option == 'View Courses'):
+            elif (option == 'View Courses'): #Done
                 return redirect('/viewCourses/')
             elif (option == 'Change Courses'):
                 print("") #need to add
@@ -167,9 +168,11 @@ def admin1(request, id):
             'title':'Admin Page',
             'message':'',
             'year':datetime.now().year,
+            'form': form,
         }
     )
 
+#Complete
 def viewStudents(request):
     """Renders the viewStudents page."""
     assert isinstance(request, HttpRequest)
@@ -209,13 +212,22 @@ def viewStudents(request):
 def viewCourses(request):
     """Renders the viewCourses page."""
     assert isinstance(request, HttpRequest)
-    
-    cursor = connection.cursor()
-    cursor.execute('''Select Department.DName, Course.CName, SName, Professor, Room_Num, Num_Credits, Semester, Seats_Left, College.Name
+
+    try:
+        with connect(
+            host="127.0.0.1",
+            user='root',
+            password='1234',
+            database='UBRegistrationDB',
+        ) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute('''Select Department.DName, Course.CName, SName, Professor, Room_Num, Num_Credits, Semester, Seats_Left, College.Name
         From Course, Section, Department, College
         Where Section.CName = Course.CName AND Course.DName = Department.DName AND College.Name = Department.Name
         Order By Department.DName Asc, Course.CName Asc, SName Asc''')
-    query_results = cursor.fetchall()
+                query_results = cursor.fetchall()
+    except Error as e:
+        print(e)
 
     return render(
         request,
