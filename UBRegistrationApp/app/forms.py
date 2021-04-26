@@ -21,7 +21,7 @@ ADMIN_MENU = [('View Users', 'View Users'), ('Change User Information', 'Change 
 
 CHANGE_MENU = [('Update', 'Update'), ('Delete', 'Delete'), ('Add', 'Add')]
 
-LOGIN_MENU = [('Student', 'Student'), ('Advisor', 'Advisor'), ('Admin', 'Admin')]
+LOGIN_ROLES = [('Student', 'Student'), ('Advisor', 'Advisor'), ('Admin', 'Admin')]
 
 class BootstrapAuthenticationForm(AuthenticationForm):
     """Authentication form which uses boostrap CSS."""
@@ -37,7 +37,7 @@ class BootstrapAuthenticationForm(AuthenticationForm):
 class LoginForm(forms.Form):
     inputUser = forms.CharField(label='Username', required=True)
     inputPass = forms.CharField(label='Password', required=True)
-    role = forms.ChoiceField(label='Role', choices=LOGIN_MENU, required=True)
+    role = forms.ChoiceField(label='Role', choices=LOGIN_ROLES, required=True)
 
 class AdvisorMenuForm(forms.Form):
     choice = forms.ChoiceField(label='Options Menu', choices=ADVISOR_MENU, required=True)

@@ -113,8 +113,20 @@ def student(request, id):
             # Process the data in form.cleaned_data
             option = form.cleaned_data['choice']
 
-            
-            # redirect to page based on choice
+            if (option == 'View Courses'):   
+                return redirect('/viewCourses/')
+            elif (option == 'View Enrolled Courses'):
+                print("") #need to add
+            elif (option == 'Course Sign Up'):
+                print("") #need to add
+            elif (option == 'View Messages'):
+                print("") #need to add
+            elif (option == 'Send Message'):
+                print("") #need to add
+            elif (option == 'View Login Information'):
+                print("") #need to add
+            elif (option == 'Change Login Information'):
+                print("") #need to add
     else:
         form = StudentMenuForm() # An unbound form
     return render(
@@ -136,8 +148,16 @@ def admin1(request, id):
             # Process the data in form.cleaned_data
             option = form.cleaned_data['choice']
 
-            
-            # redirect to page based on choice
+            if (option == 'View Users'):    
+                return redirect('')
+            elif (option == 'Change User Information'):
+                return redirect('')
+            elif (option == 'View Courses'):
+                return redirect('/viewCourses/')
+            elif (option == 'Change Courses'):
+                print("") #need to add
+            elif (option == 'View Messages'):
+                print("") #need to add
     else:
         form = AdminMenuForm() # An unbound form
     return render(
