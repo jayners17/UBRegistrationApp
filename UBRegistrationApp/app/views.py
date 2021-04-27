@@ -288,7 +288,7 @@ def viewLoginInfo(request):
     )
 
 #incomplete
-def viewEnrolledCourses(request):
+def viewEnrolledCourses(request, id):
     """Renders the viewEnrolledCourses page."""
     assert isinstance(request, HttpRequest)
 
@@ -301,10 +301,10 @@ def viewEnrolledCourses(request):
         ) as connection:
             with connection.cursor() as cursor:
                 query = '''
-                Select 
-                From 
-                Where 
-                Order By
+                Select Course.CName, SName, Professor, Room_Num, Num_Credits, Semester, Seats_Left, DName, St_ID_Num
+                From Course, Section, Enrolled
+                Where St_ID_Num = id AND Course.CName = Enrolled.CName
+                Order By Semester, CName, SName
                 '''
                 cursor.execute(query)
                 query_results = cursor.fetchall()
