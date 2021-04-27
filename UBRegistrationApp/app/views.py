@@ -286,3 +286,38 @@ def viewLoginInfo(request):
             'query_results':query_results,
         }
     )
+
+#incomplete
+def viewEnrolledCourses(request):
+    """Renders the viewEnrolledCourses page."""
+    assert isinstance(request, HttpRequest)
+
+    try:
+        with connect(
+            host="127.0.0.1",
+            user='root',
+            password='1234',
+            database='UBRegistrationDB',
+        ) as connection:
+            with connection.cursor() as cursor:
+                query = '''
+                Select 
+                From 
+                Where 
+                Order By
+                '''
+                cursor.execute(query)
+                query_results = cursor.fetchall()
+    except Error as e:
+        print(e)
+
+    return render(
+        request,
+        'app/viewEnrolledCourses.html',
+        {
+            'title':'View Login Info',
+            'year':datetime.now().year,
+            'query_results':query_results,
+        }
+    )
+
