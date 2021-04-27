@@ -252,3 +252,36 @@ def viewUsers(request):
             'query_results':query_results,
         }
     )
+
+
+def viewLoginInfo(request):
+    """Renders the viewLoginInfo page."""
+    assert isinstance(request, HttpRequest)
+
+    try:
+        with connect(
+            host="127.0.0.1",
+            user='root',
+            password='1234',
+            database='UBRegistrationDB',
+        ) as connection:
+            with connection.cursor() as cursor:
+                query = '''
+                Select Login.ID_Number, Username, Password, Student.Name, Advisor.Name, Admin.Name
+                From Login, Student, Advisor, Admin
+                Where Login.ID_Number = Student.ID_Number OR Login.ID_number = Advisor.ID_Number OR Login.ID_Number = Admin.ID_Number
+                Order By Login.ID_Number Asc'''
+                cursor.execute(query)
+                query_results = cursor.fetchall()
+    except Error as e:
+        print(e)
+
+    return render(
+        request,
+        'app/viewLoginInfo.html',
+        {
+            'title':'View Login Info',
+            'year':datetime.now().year,
+            'query_results':query_results,
+        }
+    )
