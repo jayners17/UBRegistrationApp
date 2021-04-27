@@ -49,6 +49,25 @@ class StudentMenuForm(forms.Form):
 class AdminMenuForm(forms.Form):
     choice = forms.ChoiceField(label='Options Menu', choices=ADMIN_MENU, required=True)
 
+
 class ChangeCoursesForm(forms.Form):
     choice = forms.ChoiceField(label='Options Menu', choices=CHANGE_MENU, required=True)
-    courses = forms.ModelChoiceField(label='Courses', required=True, queryset=Course.objects.all())
+    courses = forms.ModelChoiceField(label='Courses', required=True, queryset=Section.objects.all())
+
+class UpdateCourseForm(forms.Form):
+    DeptName = forms.CharField(label='Department Name', required=False)
+    CourseName = forms.CharField(label='Course Name', required=False)
+    SectionName = forms.CharField(label='Section Name', required=False)
+    ProfName = forms.CharField(label='Professor Name', required=False)
+    RoomNum = forms.CharField(label='Room Number', required=False)
+    Credits = forms.IntegerField(label='Credits', required=False)
+    Semester = forms.CharField(label='Semester', required=False)
+    Seats = forms.IntegerField(label='Seats Left', required=False)
+    CollegeName = forms.CharField(label='College Name', required=False)
+
+
+
+
+
+
+

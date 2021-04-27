@@ -115,6 +115,9 @@ class Section(models.Model):
     semester = models.CharField(db_column='Semester', max_length=50)  # Field name made lowercase.
     seats_left = models.IntegerField(db_column='Seats_Left')  # Field name made lowercase.
 
+    def __str__(self):
+        return '%s: %s' % (self.cname, self.sname)
+
     class Meta:
         managed = False
         db_table = 'Section'

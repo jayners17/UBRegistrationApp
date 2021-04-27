@@ -252,7 +252,7 @@ def changeCourses(request):
             course = form.cleaned_data['courses']
 
             if (option == 'Update'):   #Done
-                print('')
+                return redirect('/updateCourse/' + str(course) + '/')
             elif (option == 'Delete'):
                 print("") #need to add
             elif (option == 'Add'):
@@ -267,6 +267,53 @@ def changeCourses(request):
             'title':'Change Courses',
             'year':datetime.now().year,
             'form': form
+        }
+    )
+
+#Complete
+def updateCourse(request, sectionObj):
+    """Renders the updateCourse page."""
+    assert isinstance(request, HttpRequest)
+
+    strA = sectionObj.split(": ")
+    query = Section.objects.filter(cname=strA[0], sname=strA[1])
+
+    try:
+        with connect(
+            host="127.0.0.1",
+            user='root',
+            password='1234',
+            database='UBRegistrationDB',
+        ) as connection:
+            with connection.cursor() as cursor:
+                stringA = 'Select Department.DName, Course.CName, SName, Professor, Room_Num, Num_Credits, Semester, Seats_Left, College.Name '
+                stringA += 'From Course, Section, Department, College Where Section.CName = Course.CName AND Course.DName = Department.DName AND College.Name = Department.Name AND Section.CName = \'' + str(query[0].cname) + '\' AND Section.SName = \'' + str(query[0].sname) + '\''
+                print(stringA)
+                cursor.execute(stringA)
+                query_results = cursor.fetchall()
+    except Error as e:
+        print(e)
+
+    if request.method == 'POST': # If the form has been submitted...
+        form = UpdateCourseForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            if (form.cleaned_data['DeptName'] == ''):
+                deptName = query[0].cname
+            else:
+                deptName = form.cleaned_data['DeptName']
+           
+    else:
+        form = UpdateCourseForm() # An unbound form
+
+    return render(
+        request,
+        'app/updateCourse.html',
+        {
+            'title':'Update Course',
+            'year':datetime.now().year,
+            'form': form,
+            'query_results': query_results
         }
     )
 
