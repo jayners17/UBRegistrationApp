@@ -239,6 +239,37 @@ def viewCourses(request):
         }
     )
 
+#Complete
+def changeCourses(request):
+    """Renders the changeCourses page."""
+    assert isinstance(request, HttpRequest)
+
+    try:
+        with connect(
+            host="127.0.0.1",
+            user='root',
+            password='1234',
+            database='UBRegistrationDB',
+        ) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute('''Select Department.DName, Course.CName, SName, Professor, Room_Num, Num_Credits, Semester, Seats_Left, College.Name
+        From Course, Section, Department, College
+        Where Section.CName = Course.CName AND Course.DName = Department.DName AND College.Name = Department.Name
+        Order By Department.DName Asc, Course.CName Asc, SName Asc''')
+                query_results = cursor.fetchall()
+    except Error as e:
+        print(e)
+
+    return render(
+        request,
+        'app/changeCourses.html',
+        {
+            'title':'Change Courses',
+            'year':datetime.now().year,
+            'query_results':query_results,
+        }
+    )
+
 def viewUsers(request):
     """Renders the viewUsers page."""
     assert isinstance(request, HttpRequest)
