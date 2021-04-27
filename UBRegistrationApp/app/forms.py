@@ -5,6 +5,7 @@ Definition of forms.
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
+from .models import *
 
 ADVISOR_MENU = [('View Students', 'View Students'), ('View Courses', 'View Courses'), 
                 ('View Messages', 'View Messages'), ('Send Message', 'Send Message'),
@@ -48,5 +49,6 @@ class StudentMenuForm(forms.Form):
 class AdminMenuForm(forms.Form):
     choice = forms.ChoiceField(label='Options Menu', choices=ADMIN_MENU, required=True)
 
-class ChangeTable(forms.Form):
+class ChangeCoursesForm(forms.Form):
     choice = forms.ChoiceField(label='Options Menu', choices=CHANGE_MENU, required=True)
+    courses = forms.ModelChoiceField(label='Courses', required=True, queryset=Course.objects.all())

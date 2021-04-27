@@ -156,7 +156,7 @@ def admin1(request, id):
             elif (option == 'View Courses'): #Done
                 return redirect('/viewCourses/')
             elif (option == 'Change Courses'):
-                print("") #need to add
+                return redirect('/changeCourses/')
             elif (option == 'View Messages'):
                 print("") #need to add
     else:
@@ -244,21 +244,21 @@ def changeCourses(request):
     """Renders the changeCourses page."""
     assert isinstance(request, HttpRequest)
 
-    try:
-        with connect(
-            host="127.0.0.1",
-            user='root',
-            password='1234',
-            database='UBRegistrationDB',
-        ) as connection:
-            with connection.cursor() as cursor:
-                cursor.execute('''Select Department.DName, Course.CName, SName, Professor, Room_Num, Num_Credits, Semester, Seats_Left, College.Name
-        From Course, Section, Department, College
-        Where Section.CName = Course.CName AND Course.DName = Department.DName AND College.Name = Department.Name
-        Order By Department.DName Asc, Course.CName Asc, SName Asc''')
-                query_results = cursor.fetchall()
-    except Error as e:
-        print(e)
+    if request.method == 'POST': # If the form has been submitted...
+        form = ChangeCoursesForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            option = form.cleaned_data['choice']
+            course = form.cleaned_data['courses']
+
+            if (option == 'Update'):   #Done
+                print('')
+            elif (option == 'Delete'):
+                print("") #need to add
+            elif (option == 'Add'):
+                print("") #need to add
+    else:
+        form = ChangeCoursesForm() # An unbound form
 
     return render(
         request,
@@ -266,7 +266,7 @@ def changeCourses(request):
         {
             'title':'Change Courses',
             'year':datetime.now().year,
-            'query_results':query_results,
+            'form': form
         }
     )
 
