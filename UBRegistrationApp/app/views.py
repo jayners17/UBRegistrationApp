@@ -253,7 +253,7 @@ def viewUsers(request):
         }
     )
 
-
+#incomplete
 def viewLoginInfo(request):
     """Renders the viewLoginInfo page."""
     assert isinstance(request, HttpRequest)
@@ -267,10 +267,11 @@ def viewLoginInfo(request):
         ) as connection:
             with connection.cursor() as cursor:
                 query = '''
-                Select Login.ID_Number, Username, Password, Student.Name, Advisor.Name, Admin.Name
-                From Login, Student, Advisor, Admin
-                Where Login.ID_Number = Student.ID_Number OR Login.ID_number = Advisor.ID_Number OR Login.ID_Number = Admin.ID_Number
-                Order By Login.ID_Number Asc'''
+                Select 
+                From 
+                Where 
+                Order By
+                '''
                 cursor.execute(query)
                 query_results = cursor.fetchall()
     except Error as e:
