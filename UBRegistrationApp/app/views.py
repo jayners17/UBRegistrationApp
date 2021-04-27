@@ -301,7 +301,7 @@ def viewEnrolledCourses(request, id):
         ) as connection:
             with connection.cursor() as cursor:
                 query = '''
-                Select Course.CName, SName, Professor, Room_Num, Num_Credits, Semester, Seats_Left, DName, St_ID_Num
+                Select Course.CName, Course.SName, Professor, Room_Num, Num_Credits, Semester, Seats_Left, DName, St_ID_Num
                 From Course, Section, Enrolled
                 Where St_ID_Num = id AND Course.CName = Enrolled.CName
                 Order By Semester, CName, SName
