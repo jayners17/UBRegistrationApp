@@ -19,7 +19,7 @@ urlpatterns = [
     path('viewUsers/', views.viewUsers, name='viewUsers'),
     path('changeCourses/', views.changeCourses, name='changeCourses'),
     path('updateCourse/<sectionObj>/', views.updateCourse, name='updateCourse'),
-
+    path('enrollCourse/<id>/', views.enrollCourse, name='enrollCourse'),
 
     path('login/',
          LoginView.as_view

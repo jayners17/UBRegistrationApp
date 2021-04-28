@@ -118,7 +118,7 @@ def student(request, id):
             elif (option == 'View Enrolled Courses'):
                 print("") #need to add
             elif (option == 'Course Sign Up'):
-                print("") #need to add
+                return redirect('/enrollCourse/' + str(id) + '/')
             elif (option == 'View Messages'):
                 print("") #need to add
             elif (option == 'Send Message'):
@@ -360,6 +360,62 @@ def updateCourse(request, sectionObj):
         'app/updateCourse.html',
         {
             'title':'Update Course',
+            'year':datetime.now().year,
+            'form': form,
+            'query_results': query_results
+        }
+    )
+
+def enrollCourse(request, id):
+    """Renders the enrollCourse page."""
+    assert isinstance(request, HttpRequest)
+
+    try:
+        with connect(
+            host="127.0.0.1",
+            user='root',
+            password='1234',
+            database='UBRegistrationDB',
+        ) as connection:
+            with connection.cursor() as cursor:
+                stringA = 'Select Department.DName, Course.CName, SName, Professor, Room_Num, Num_Credits, Semester, Seats_Left, College.Name '
+                stringA += 'From Course, Section, Department, College Where Section.CName = Course.CName AND Course.DName = Department.DName AND College.Name = Department.Name '
+                cursor.execute(stringA)
+                query_results = cursor.fetchall()
+    except Error as e:
+        print(e)
+
+
+    if request.method == 'POST': # If the form has been submitted...
+        form = EnrollCourseForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            course = form.cleaned_data['courses']
+
+            query = Section.objects.filter(cname=course.cname, sname=course.sname)
+            courseQ = Course.objects.filter(cname=course.cname)
+
+            try:
+                with connect(
+                    host="127.0.0.1",
+                    user='root',
+                    password='1234',
+                    database='UBRegistrationDB',
+                ) as connection:
+                    with connection.cursor() as cursor:
+                        stringE = 'INSERT INTO Enrolled VALUES ("%s", "%s", "%s", "%s") ' % (id, query[0].cname, query[0].sname, courseQ[0].num_credits)
+                        cursor.execute(stringE)
+            except Error as e:
+                print(e)
+           
+    else:
+        form = EnrollCourseForm() # An unbound form
+
+    return render(
+        request,
+        'app/enrollCourse.html',
+        {
+            'title':'Enroll In A Course',
             'year':datetime.now().year,
             'form': form,
             'query_results': query_results

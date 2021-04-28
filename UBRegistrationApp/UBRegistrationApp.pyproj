@@ -64,6 +64,7 @@
     </Content>
     <Content Include="app\templates\app\admin1.html" />
     <Content Include="app\templates\app\changeCourses.html" />
+    <Content Include="app\templates\app\enrollCourse.html" />
     <Content Include="app\templates\app\updateCourse.html" />
     <Content Include="app\templates\app\viewCourses.html" />
     <Content Include="app\templates\app\viewStudents.html" />
