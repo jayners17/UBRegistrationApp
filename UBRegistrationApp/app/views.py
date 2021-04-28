@@ -277,18 +277,6 @@ def updateCourse(request, sectionObj):
 
     strA = sectionObj.split(": ")
     query = Section.objects.filter(cname=strA[0], sname=strA[1])
-    courseObj = Course.objects.filter(cname=strA[0])
-    queryCollege = Department.objects.filter(dname=courseObj[0].dname)
-
-    name = courseObj[0].cname
-    dept = courseObj[0].dname
-    secname = query[0].sname
-    prof = courseObj[0].professor
-    room = courseObj[0].room_num
-    credits = courseObj[0].num_credits
-    semest = query[0].semester
-    seats = query[0].seats_left
-    college = queryCollege[0].name
 
     try:
         with connect(
@@ -306,14 +294,22 @@ def updateCourse(request, sectionObj):
     except Error as e:
         print(e)
 
+    for que in query_results:
+        name = que[1]
+        dept = que[0]
+        secname = que[2]
+        prof = que[3]
+        room = que[4]
+        credits = que[5]
+        semest = que[6]
+        seats = que[7]
+        college = que[8]
 
 
     if request.method == 'POST': # If the form has been submitted...
         form = UpdateCourseForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
-            if (form.cleaned_data['DeptName'] != ''):
-                dept = form.cleaned_data['DeptName']
             if (form.cleaned_data['CourseName'] != ''):
                 name = form.cleaned_data['CourseName']
             if (form.cleaned_data['SectionName'] != ''):
@@ -322,30 +318,39 @@ def updateCourse(request, sectionObj):
                 prof = form.cleaned_data['ProfName']
             if (form.cleaned_data['RoomNum'] != ''):
                 room = form.cleaned_data['RoomNum']
-            if (form.cleaned_data['Credits'] != ''):
+            if (form.cleaned_data['Credits'] != None):
                 credits = form.cleaned_data['Credits']
             if (form.cleaned_data['Semester'] != ''):
                 semest = form.cleaned_data['Semester']
-            if (form.cleaned_data['Seats'] != ''):
+            if (form.cleaned_data['Seats'] != None):
                 seats = form.cleaned_data['Seats']
-            if (form.cleaned_data['CollegeName'] != ''):
-                college = form.cleaned_data['CollegeName']
 
-    try:
-        with connect(
-            host="127.0.0.1",
-            user='root',
-            password='1234',
-            database='UBRegistrationDB',
-        ) as connection:
-            with connection.cursor() as cursor:
-                stringA = 'UPDATE Course, Section SET '
-                stringA += 'WHERE Course.cname From Course, Section, Department, College Where Section.CName = Course.CName AND Course.DName = Department.DName AND College.Name = Department.Name AND Section.CName = \'' + str(query[0].cname) + '\' AND Section.SName = \'' + str(query[0].sname) + '\''
-                print(stringA)
-                cursor.execute(stringA)
-                query_results = cursor.fetchall()
-    except Error as e:
-        print(e)
+            
+            try:
+                with connect(
+                    host="127.0.0.1",
+                    user='root',
+                    password='1234',
+                    database='UBRegistrationDB',
+                ) as connection:
+                    with connection.cursor() as cursor:
+                        stringE = 'UPDATE Enrolled SET '
+                        stringS += 'Enrolled.CName = "%s", Enrolled.SName = "%s" ' % (name, secname)
+                        stringS += 'WHERE Enrolled.CName = \'' + str(query[0].cname) + '\' AND Enrolled.SName = \'' + str(query[0].sname) + '\''
+                        cursor.execute(stringE)
+                        print('enrolled')
+                        stringC = 'UPDATE Course SET '
+                        stringC += 'Course.CName = "%s", Course.Room_Num = "%s", Course.Professor = "%s", Course.Num_Credits = "%s" ' % (name, room, prof, str(credits))
+                        stringC += 'WHERE Course.CName = \'' + str(query[0].cname) + '\''
+                        cursor.execute(stringC)
+                        print('course')
+                        stringS = 'UPDATE Section SET '
+                        stringS += 'Section.CName = "%s", Section.SName = "%s", Section.Semester = "%s", Section.Seats_Left = "%s" ' % (name, secname, semest, str(seats))
+                        stringS += 'WHERE Section.CName = \'' + str(query[0].cname) + '\' AND Section.SName = \'' + str(query[0].sname) + '\''
+                        cursor.execute(stringS)
+                        print('section')
+            except Error as e:
+                print(e)
            
     else:
         form = UpdateCourseForm() # An unbound form

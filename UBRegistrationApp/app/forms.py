@@ -55,7 +55,7 @@ class ChangeCoursesForm(forms.Form):
     courses = forms.ModelChoiceField(label='Courses', required=True, queryset=Section.objects.all())
 
 class UpdateCourseForm(forms.Form):
-    DeptName = forms.CharField(label='Department Name', required=False)
+    #DeptName = forms.CharField(label='Department Name', required=False)
     CourseName = forms.CharField(label='Course Name', required=False)
     SectionName = forms.CharField(label='Section Name', required=False)
     ProfName = forms.CharField(label='Professor Name', required=False)
