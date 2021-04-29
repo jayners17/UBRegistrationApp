@@ -77,7 +77,7 @@ class SendMessageForm(forms.Form):
     toUser = forms.ModelChoiceField(label='To: ', required=True, queryset=Login.objects.all())
     text = forms.CharField(label='Message', required=True)
     
-class ChangeLoginForm(forms.Form):
+class ChangeLoginInfoForm(forms.Form):
     inputUser = forms.CharField(label='Username', required=True)
     oldPass = forms.CharField(label='Old Password', required=True)
     newPass = forms.CharField(label='New Password', required=True)
