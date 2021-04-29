@@ -25,6 +25,10 @@ urlpatterns = [
     path('addCourse/', views.addCourse, name='addCourse'),
     path('messages/<id>/', views.messages, name='messages'),
     path('changeLoginInfo/', views.changeLoginInfo, name='changeLoginInfo'),
+    path('changeUserInfo/', views.changeUserInfo, name='changeUserInfo'),
+    path('updateUserInfo/', views.updateUserInfo, name='updateUserInfo'),
+    path('addUser/<role>/', views.addUser, name='addUser'),
+    
 
     path('login/',
          LoginView.as_view
