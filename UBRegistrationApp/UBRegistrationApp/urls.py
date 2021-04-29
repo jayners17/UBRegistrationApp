@@ -21,6 +21,7 @@ urlpatterns = [
     path('updateCourse/<sectionObj>/', views.updateCourse, name='updateCourse'),
     path('enrollCourse/<id>/', views.enrollCourse, name='enrollCourse'),
     path('addCourse/', views.addCourse, name='addCourse'),
+    path('messages/<id>/', views.messages, name='messages'),
 
     path('login/',
          LoginView.as_view

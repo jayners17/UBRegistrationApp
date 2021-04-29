@@ -75,6 +75,9 @@ class Login(models.Model):
     username = models.CharField(db_column='Username', unique=True, max_length=50)  # Field name made lowercase.
     password = models.CharField(db_column='Password', max_length=50)  # Field name made lowercase.
 
+    def __str__(self):
+        return '%s' % (self.username)
+
     class Meta:
         managed = False
         db_table = 'Login'

@@ -8,17 +8,16 @@ from django.utils.translation import ugettext_lazy as _
 from .models import *
 
 ADVISOR_MENU = [('View Students', 'View Students'), ('View Courses', 'View Courses'), 
-                ('View Messages', 'View Messages'), ('Send Message', 'Send Message'),
+                ('View/Send Messages', 'View/Send Messages'),
                 ('View Login Information','View Login Information'), ('Change Login Information','Change Login Information')]
 
 STUDENT_MENU = [('View Courses', 'View Courses'), ('View Enrolled Courses', 'View Enrolled Courses'), 
                 ('Course Sign Up', 'Course Sign Up'),
-                ('View Messages', 'View Messages'), ('Send Message', 'Send Message'),
+                ('View/Send Messages', 'View/Send Messages'),
                 ('View Login Information','View Login Information'), ('Change Login Information','Change Login Information')]
 
 ADMIN_MENU = [('View Users', 'View Users'), ('Change User Information', 'Change User Information'), 
-              ('View Courses', 'View Courses'), ('Change Courses', 'Change Courses'), 
-                ('View Messages', 'View Messages')]
+              ('View Courses', 'View Courses'), ('Change Courses', 'Change Courses'), ('View/Send Messages', 'View/Send Messages')]
 
 CHANGE_MENU = [('Update', 'Update'), ('Delete', 'Delete'), ('Add', 'Add')]
 
@@ -77,6 +76,11 @@ class AddCourseForm(forms.Form):
 
 class EnrollCourseForm(forms.Form):
     courses = forms.ModelChoiceField(label='Courses', required=True, queryset=Section.objects.all())
+
+class SendMessageForm(forms.Form):
+    toUser = forms.ModelChoiceField(label='To: ', required=True, queryset=Login.objects.all())
+    text = forms.CharField(label='Message', required=True)
+    
 
 
 

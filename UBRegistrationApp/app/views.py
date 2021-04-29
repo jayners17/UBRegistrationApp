@@ -34,22 +34,20 @@ def home(request):
 
             if (inRole == "Student"):
                 try:
+                    print('student')
                     tryS = Student.objects.filter(id_number = id_num)
-                    print(str(tryS[0].id_number))
                     return redirect('/student/'+ str(id_num) + '/')
                 except:
                     text = "Role is incorrect..."
             elif (inRole == 'Advisor'):
                 try:
                     tryA = Advisor.objects.filter(id_number = id_num)
-                    print(str(tryA[0].id_number))
                     return redirect('/advisor/'+ str(id_num) + '/')
                 except:
                     text = "Role is incorrect..."
             elif (inRole == 'Admin'):
                 try:
                     tryAd = Admin.objects.filter(id_number = id_num)
-                    print(str(tryAd[0].id_number))
                     return redirect('/admin1/'+ str(id_num) + '/')
                 except:
                     text = "Role is incorrect..."
@@ -83,10 +81,8 @@ def advisor(request, id):
                 return redirect('/viewStudents/')
             elif (option == 'View Courses'): #Done
                 return redirect('/viewCourses/')
-            elif (option == 'View Messages'):
-                print("") #need to add
-            elif (option == 'Send Message'):
-                print("") #need to add
+            elif (option == 'View/Send Messages'): #Done
+                return redirect('/messages/' + str(id) + '/')
             elif (option == 'View Login Information'):
                 print("") #need to add
             elif (option == 'Change Login Information'):
@@ -119,10 +115,8 @@ def student(request, id):
                 print("") #need to add
             elif (option == 'Course Sign Up'):
                 return redirect('/enrollCourse/' + str(id) + '/')
-            elif (option == 'View Messages'):
-                print("") #need to add
-            elif (option == 'Send Message'):
-                print("") #need to add
+            elif (option == 'View/Send Messages'): #Done
+                return redirect('/messages/' + str(id) + '/')
             elif (option == 'View Login Information'):
                 print("") #need to add
             elif (option == 'Change Login Information'):
@@ -157,8 +151,9 @@ def admin1(request, id):
                 return redirect('/viewCourses/')
             elif (option == 'Change Courses'):
                 return redirect('/changeCourses/')
-            elif (option == 'View Messages'):
-                print("") #need to add
+            elif (option == 'View/Send Messages'): #Done
+                return redirect('/messages/' + str(id) + '/')
+
     else:
         form = AdminMenuForm() # An unbound form
     return render(
@@ -468,6 +463,63 @@ def enrollCourse(request, id):
         'app/enrollCourse.html',
         {
             'title':'Enroll In A Course',
+            'year':datetime.now().year,
+            'form': form,
+            'query_results': query_results
+        }
+    )
+
+def messages(request, id):
+    """Renders the messages page."""
+    assert isinstance(request, HttpRequest)
+
+    try:
+        with connect(
+            host="127.0.0.1",
+            user='root',
+            password='1234',
+            database='UBRegistrationDB',
+        ) as connection:
+            with connection.cursor() as cursor:
+                stringA = 'Select To_User, From_User, Time_Sent, Message_Text from Message, Login where Login.ID_Number = "%s" AND (To_User = Login.Username OR From_User = Login.Username)' % (str(id))
+                cursor.execute(stringA)
+                query_results = cursor.fetchall()
+    except Error as e:
+        print(e)
+
+
+    if request.method == 'POST': # If the form has been submitted...
+        form = SendMessageForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            to = form.cleaned_data['toUser']
+            text = form.cleaned_data['text']
+            date = datetime.now()
+            login = Login.objects.filter(id_number = id)
+            from1 = login[0].username
+
+            try:
+                with connect(
+                    host="127.0.0.1",
+                    user='root',
+                    password='1234',
+                    database='UBRegistrationDB',
+                ) as connection:
+                    with connection.cursor() as cursor:
+                        stringE = 'INSERT INTO Message VALUES ("%s", "%s", "%s", "%s") ' % (text, date, to, from1)
+                        cursor.execute(stringE)
+                        connection.commit()
+            except Error as e:
+                print(e)
+           
+    else:
+        form = SendMessageForm() # An unbound form
+
+    return render(
+        request,
+        'app/messages.html',
+        {
+            'title':'View/Send Messages',
             'year':datetime.now().year,
             'form': form,
             'query_results': query_results
