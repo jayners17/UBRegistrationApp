@@ -266,7 +266,7 @@ def changeCourses(request):
         }
     )
 
-#incomplete
+#complete
 def updateCourse(request, sectionObj):
     """Renders the updateCourse page."""
     assert isinstance(request, HttpRequest)
@@ -332,6 +332,21 @@ def updateCourse(request, sectionObj):
                         stringS += 'WHERE Section.CName = \'' + str(query[0].cname) + '\' AND Section.SName = \'' + str(query[0].sname) + '\''
                         cursor.execute(stringS)
                         connection.commit()
+            except Error as e:
+                print(e)
+
+            try:
+                with connect(
+                    host="127.0.0.1",
+                    user='root',
+                    password='1234',
+                    database='UBRegistrationDB',
+                ) as connection:
+                    with connection.cursor() as cursor:
+                        stringA = 'Select Department.DName, Course.CName, SName, Professor, Room_Num, Num_Credits, Semester, Seats_Left, College.Name '
+                        stringA += 'From Course, Section, Department, College Where Section.CName = Course.CName AND Course.DName = Department.DName AND College.Name = Department.Name AND Section.CName = \'' + str(query[0].cname) + '\' AND Section.SName = \'' + str(query[0].sname) + '\''
+                        cursor.execute(stringA)
+                        query_results = cursor.fetchall()
             except Error as e:
                 print(e)
            
@@ -497,6 +512,20 @@ def messages(request, id):
                         stringE = 'INSERT INTO Message VALUES ("%s", "%s", "%s", "%s") ' % (text, date, to, from1)
                         cursor.execute(stringE)
                         connection.commit()
+            except Error as e:
+                print(e)
+
+            try:
+                with connect(
+                    host="127.0.0.1",
+                    user='root',
+                    password='1234',
+                    database='UBRegistrationDB',
+                ) as connection:
+                    with connection.cursor() as cursor:
+                        stringA = 'Select To_User, From_User, Time_Sent, Message_Text from Message, Login where Login.ID_Number = "%s" AND (To_User = Login.Username OR From_User = Login.Username)' % (str(id))
+                        cursor.execute(stringA)
+                        query_results = cursor.fetchall()
             except Error as e:
                 print(e)
            
