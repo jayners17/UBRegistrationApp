@@ -68,6 +68,7 @@ def home(request):
         }
     )
 
+#need to add redirects
 def advisor(request, id):
     """Renders the advisor page."""
     assert isinstance(request, HttpRequest)
@@ -100,6 +101,7 @@ def advisor(request, id):
         }
     )
 
+#need to add redirects
 def student(request, id):
     """Renders the student page."""
     assert isinstance(request, HttpRequest)
@@ -113,7 +115,7 @@ def student(request, id):
                 return redirect('/viewCourses/')
             elif (option == 'View Enrolled Courses'):
                 print("") #need to add
-            elif (option == 'Course Sign Up'):
+            elif (option == 'Course Sign Up'): #Done
                 return redirect('/enrollCourse/' + str(id) + '/')
             elif (option == 'View/Send Messages'): #Done
                 return redirect('/messages/' + str(id) + '/')
@@ -134,6 +136,7 @@ def student(request, id):
         }
     )
 
+#need to add redirects
 def admin1(request, id):
     """Renders the admin page."""
     assert isinstance(request, HttpRequest)
@@ -234,7 +237,7 @@ def viewCourses(request):
         }
     )
 
-#Complete
+#Incomplete
 def changeCourses(request):
     """Renders the changeCourses page."""
     assert isinstance(request, HttpRequest)
@@ -265,7 +268,7 @@ def changeCourses(request):
         }
     )
 
-#Complete
+#incomplete
 def updateCourse(request, sectionObj):
     """Renders the updateCourse page."""
     assert isinstance(request, HttpRequest)
@@ -364,6 +367,7 @@ def updateCourse(request, sectionObj):
         }
     )
 
+#complete
 def addCourse(request):
     """Renders the addCourse page."""
     assert isinstance(request, HttpRequest)
@@ -412,6 +416,7 @@ def addCourse(request):
         }
     )
 
+#complete
 def enrollCourse(request, id):
     """Renders the enrollCourse page."""
     assert isinstance(request, HttpRequest)
@@ -469,6 +474,7 @@ def enrollCourse(request, id):
         }
     )
 
+#complete
 def messages(request, id):
     """Renders the messages page."""
     assert isinstance(request, HttpRequest)
@@ -526,6 +532,7 @@ def messages(request, id):
         }
     )
 
+#incomplete
 def viewUsers(request):
     """Renders the viewUsers page."""
     assert isinstance(request, HttpRequest)
