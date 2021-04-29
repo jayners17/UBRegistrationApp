@@ -638,12 +638,12 @@ def viewLoginInfo(request, id):
     )
 
 #incomplete
-def changeLogin(request,id):
+def changeLoginInfo(request):
     """Renders the changeLogin page."""
     assert isinstance(request, HttpRequest)
 
     if request.method == 'POST': # If the form has been submitted...
-        form = ChangeLoginForm(request.POST) # A form bound to the POST data
+        form = ChangeLoginInfoForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
             inputUser = form.cleaned_data['inputUser']
