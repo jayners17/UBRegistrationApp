@@ -91,7 +91,7 @@ def advisor(request, id):
             elif (option == 'View Login Information'): #Done
                 return redirect('/viewLoginInfo/' + str(id) + '/')
             elif (option == 'Change Login Information'):
-                print("") #need to add
+                return redirect('/changeLoginInfo/')
     else:
         form = AdvisorMenuForm() # An unbound form
     return render(
@@ -126,7 +126,7 @@ def student(request, id):
             elif (option == 'View Login Information'): #Done
                 return redirect('/viewLoginInfo/' + str(id) + '/')
             elif (option == 'Change Login Information'):
-                print("") #need to add
+                return redirect('/changeLoginInfo/')
     else:
         form = StudentMenuForm() # An unbound form
     return render(
@@ -154,6 +154,8 @@ def admin1(request, id):
                 return redirect('/viewUsers/')
             elif (option == 'Change User Information'):
                 return redirect('')
+            elif (option == 'View Students'):
+                return redirect('/viewStudents/')
             elif (option == 'View Courses'): #Done
                 return redirect('/viewCourses/')
             elif (option == 'Change Courses'):
@@ -162,6 +164,8 @@ def admin1(request, id):
                 return redirect('/messages/' + str(id) + '/')
             elif (option == 'View Login Information'): #Done
                 return redirect('/viewLoginInfo/' + str(id) + '/')
+            elif (option == 'Chnage Login Information'): #Done
+                return redirect('/changeLoginInfo/')
 
     else:
         form = AdminMenuForm() # An unbound form
@@ -666,28 +670,28 @@ def addUser(request,role):
             
             if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
-            name = form.cleaned_data['name']
-            ID = form.cleaned_data['ID']
-            adv_ID = form.cleaned_data['adv_ID']
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
+                name = form.cleaned_data['name']
+                ID = form.cleaned_data['ID']
+                adv_ID = form.cleaned_data['adv_ID']
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password']
 
-            try:
-                with connect(
-                    host="127.0.0.1",
-                    user='root',
-                    password='1234',
-                    database='UBRegistrationDB',
-                ) as connection:
-                    with connection.cursor() as cursor:
-                        stringA = f'INSERT INTO Login (ID_Number, Username, Password) VALUES ({int(ID)}, {str(username)}, {str(password)}") '
-                        cursor.execute(stringA)
-                        connection.commit()
-                        stringA = f'INSERT INTO Student (ID_Number, Name, Adv_ID_Num) VALUES ({int(ID)}, {str(name)}, {int(adv_ID)}) '
-                        cursor.execute(stringA)
-                        connection.commit()
-            except Error as e:
-                print(e)
+                try:
+                    with connect(
+                        host="127.0.0.1",
+                        user='root',
+                        password='1234',
+                        database='UBRegistrationDB',
+                    ) as connection:
+                        with connection.cursor() as cursor:
+                            stringA = f'INSERT INTO Login (ID_Number, Username, Password) VALUES ({int(ID)}, {str(username)}, {str(password)}") '
+                            cursor.execute(stringA)
+                            connection.commit()
+                            stringA = f'INSERT INTO Student (ID_Number, Name, Adv_ID_Num) VALUES ({int(ID)}, {str(name)}, {int(adv_ID)}) '
+                            cursor.execute(stringA)
+                            connection.commit()
+                except Error as e:
+                    print(e)
             
         elif str(role) == "Advisor":
             
@@ -695,28 +699,28 @@ def addUser(request,role):
             
             if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
-            name = form.cleaned_data['name']
-            ID = form.cleaned_data['ID']
-            DName = form.cleaned_data['DName']
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
+                name = form.cleaned_data['name']
+                ID = form.cleaned_data['ID']
+                DName = form.cleaned_data['DName']
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password']
 
-            try:
-                with connect(
-                    host="127.0.0.1",
-                    user='root',
-                    password='1234',
-                    database='UBRegistrationDB',
-                ) as connection:
-                    with connection.cursor() as cursor:
-                        stringA = f'INSERT INTO Login (ID_Number, Username, Password) VALUES ({int(ID)}, {str(username)}, {str(password)}") '
-                        cursor.execute(stringA)
-                        connection.commit()
-                        stringA = f'INSERT INTO Advisor (ID_Number, Name, DName) VALUES ({int(ID)}, {str(name)}, {str(DName)}) '
-                        cursor.execute(stringA)
-                        connection.commit()
-            except Error as e:
-                print(e)
+                try:
+                    with connect(
+                        host="127.0.0.1",
+                        user='root',
+                        password='1234',
+                        database='UBRegistrationDB',
+                    ) as connection:
+                        with connection.cursor() as cursor:
+                            stringA = f'INSERT INTO Login (ID_Number, Username, Password) VALUES ({int(ID)}, {str(username)}, {str(password)}") '
+                            cursor.execute(stringA)
+                            connection.commit()
+                            stringA = f'INSERT INTO Advisor (ID_Number, Name, DName) VALUES ({int(ID)}, {str(name)}, {str(DName)}) '
+                            cursor.execute(stringA)
+                            connection.commit()
+                except Error as e:
+                    print(e)
         
         
         elif str(role) == "Admin":
@@ -725,27 +729,27 @@ def addUser(request,role):
             
             if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
-            name = form.cleaned_data['name']
-            ID = form.cleaned_data['ID']
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
+                name = form.cleaned_data['name']
+                ID = form.cleaned_data['ID']
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password']
 
-            try:
-                with connect(
-                    host="127.0.0.1",
-                    user='root',
-                    password='1234',
-                    database='UBRegistrationDB',
-                ) as connection:
-                    with connection.cursor() as cursor:
-                        stringA = f'INSERT INTO Login (ID_Number, Username, Password) VALUES ({int(ID)}, {str(username)}, {str(password)}") '
-                        cursor.execute(stringA)
-                        connection.commit()
-                        stringA = f'INSERT INTO Admin (ID_Number, Name) VALUES ({int(ID)}, {str(name)}) '
-                        cursor.execute(stringA)
-                        connection.commit()
-            except Error as e:
-                print(e)
+                try:
+                    with connect(
+                        host="127.0.0.1",
+                        user='root',
+                        password='1234',
+                        database='UBRegistrationDB',
+                    ) as connection:
+                        with connection.cursor() as cursor:
+                            stringA = f'INSERT INTO Login (ID_Number, Username, Password) VALUES ({int(ID)}, {str(username)}, {str(password)}") '
+                            cursor.execute(stringA)
+                            connection.commit()
+                            stringA = f'INSERT INTO Admin (ID_Number, Name) VALUES ({int(ID)}, {str(name)}) '
+                            cursor.execute(stringA)
+                            connection.commit()
+                except Error as e:
+                    print(e)
         
         
            
@@ -807,6 +811,7 @@ def changeLoginInfo(request):
             
             try:
                 query = Login.objects.filter(username = inputUser, password = oldPass)
+                print(query[0].username)
                 
                 try:
                     with connect(
@@ -817,8 +822,8 @@ def changeLoginInfo(request):
                     ) as connection:
                         with connection.cursor() as cursor:
                             stringC = 'UPDATE Login SET '
-                            stringC += f'Login.Password = {str(newPass)}'
-                            stringC += 'WHERE Login.Username = \'' + str(inputUser) + '\''
+                            stringC += 'Login.Password = "%s" ' % (newPass)
+                            stringC += 'WHERE Login.Username = "%s"' % (inputUser)
                             cursor.execute(stringC)
                             connection.commit()
                 except Error as e:
