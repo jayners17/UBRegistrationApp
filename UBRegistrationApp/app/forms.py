@@ -90,9 +90,10 @@ class UpdateUserinfoForm(forms.Form):
     newPass = forms.CharField(label='New Password', required=True)
    
 class AddUserForm(forms.Form):
+    name = forms.CharField(label='Name', required=True)
+    ID = forms.CharField(label='ID', required=True)
     username = forms.CharField(label='Username', required=True)
     password = forms.CharField(label='Password', required=True)
-    ID = forms.CharField(label='ID', required=True)
     role = forms.ChoiceField(label='Role', choices=LOGIN_ROLES, required=True)
     
     
