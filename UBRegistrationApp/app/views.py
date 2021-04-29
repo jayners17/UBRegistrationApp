@@ -36,21 +36,18 @@ def home(request):
                 try:
                     print('student')
                     tryS = Student.objects.filter(id_number = id_num)
-                    print(str(tryS[0].id_number))
                     return redirect('/student/'+ str(id_num) + '/')
                 except:
                     text = "Role is incorrect..."
             elif (inRole == 'Advisor'):
                 try:
                     tryA = Advisor.objects.filter(id_number = id_num)
-                    print(str(tryA[0].id_number))
                     return redirect('/advisor/'+ str(id_num) + '/')
                 except:
                     text = "Role is incorrect..."
             elif (inRole == 'Admin'):
                 try:
                     tryAd = Admin.objects.filter(id_number = id_num)
-                    print(str(tryAd[0].id_number))
                     return redirect('/admin1/'+ str(id_num) + '/')
                 except:
                     text = "Role is incorrect..."
@@ -269,7 +266,7 @@ def changeCourses(request):
         }
     )
 
-#complete
+#incomplete
 def updateCourse(request, sectionObj):
     """Renders the updateCourse page."""
     assert isinstance(request, HttpRequest)
@@ -335,21 +332,6 @@ def updateCourse(request, sectionObj):
                         stringS += 'WHERE Section.CName = \'' + str(query[0].cname) + '\' AND Section.SName = \'' + str(query[0].sname) + '\''
                         cursor.execute(stringS)
                         connection.commit()
-            except Error as e:
-                print(e)
-
-            try:
-                with connect(
-                    host="127.0.0.1",
-                    user='root',
-                    password='1234',
-                    database='UBRegistrationDB',
-                ) as connection:
-                    with connection.cursor() as cursor:
-                        stringA = 'Select Department.DName, Course.CName, SName, Professor, Room_Num, Num_Credits, Semester, Seats_Left, College.Name '
-                        stringA += 'From Course, Section, Department, College Where Section.CName = Course.CName AND Course.DName = Department.DName AND College.Name = Department.Name AND Section.CName = \'' + str(query[0].cname) + '\' AND Section.SName = \'' + str(query[0].sname) + '\''
-                        cursor.execute(stringA)
-                        query_results = cursor.fetchall()
             except Error as e:
                 print(e)
            
@@ -517,20 +499,6 @@ def messages(request, id):
                         connection.commit()
             except Error as e:
                 print(e)
-
-            try:
-                with connect(
-                    host="127.0.0.1",
-                    user='root',
-                    password='1234',
-                    database='UBRegistrationDB',
-                ) as connection:
-                    with connection.cursor() as cursor:
-                        stringA = 'Select To_User, From_User, Time_Sent, Message_Text from Message, Login where Login.ID_Number = "%s" AND (To_User = Login.Username OR From_User = Login.Username)' % (str(id))
-                        cursor.execute(stringA)
-                        query_results = cursor.fetchall()
-            except Error as e:
-                print(e)
            
     else:
         form = SendMessageForm() # An unbound form
@@ -562,7 +530,7 @@ def viewUsers(request):
     )
 
 #incomplete
-def viewLoginInfo(request):
+def viewLoginInfo(request, id):
     """Renders the viewLoginInfo page."""
     assert isinstance(request, HttpRequest)
 
@@ -575,10 +543,9 @@ def viewLoginInfo(request):
         ) as connection:
             with connection.cursor() as cursor:
                 query = '''
-                Select 
-                From 
-                Where 
-                Order By
+                Select ID_Number, Username, Password
+                From Login
+                Where ID_Number = id
                 '''
                 cursor.execute(query)
                 query_results = cursor.fetchall()
@@ -592,6 +559,34 @@ def viewLoginInfo(request):
             'title':'View Login Info',
             'year':datetime.now().year,
             'query_results':query_results,
+        }
+    )
+
+def changeLogin(request):
+    """Renders the changeLogin page."""
+    assert isinstance(request, HttpRequest)
+
+    if request.method == 'POST': # If the form has been submitted...
+        form = ChangeLoginForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+#             option = form.cleaned_data['choice']
+#             course = form.cleaned_data['courses']
+
+            if (option == 'Update'):   #Done
+                return redirect('/updateCourse/' + str(course) + '/')
+            elif (option == 'Add'):
+                return redirect('/addCourse/')
+    else:
+        form = ChangeCoursesForm() # An unbound form
+
+    return render(
+        request,
+        'app/changeCourses.html',
+        {
+            'title':'Change Courses',
+            'year':datetime.now().year,
+            'form': form
         }
     )
 
