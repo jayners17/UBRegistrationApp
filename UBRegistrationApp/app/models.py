@@ -16,6 +16,9 @@ class Advisor(models.Model):
     name = models.CharField(db_column='Name', max_length=50)  # Field name made lowercase.
     dname = models.ForeignKey('Department', models.DO_NOTHING, db_column='DName')  # Field name made lowercase.
 
+    def __str__(self):
+        return '%s' % (self.id_number)
+
     class Meta:
         managed = False
         db_table = 'Advisor'
@@ -44,6 +47,9 @@ class Course(models.Model):
 class Department(models.Model):
     dname = models.CharField(db_column='DName', primary_key=True, max_length=50)  # Field name made lowercase.
     name = models.ForeignKey(College, models.DO_NOTHING, db_column='Name')  # Field name made lowercase.
+
+    def __str__(self):
+        return '%s' % (self.dname)
 
     class Meta:
         managed = False

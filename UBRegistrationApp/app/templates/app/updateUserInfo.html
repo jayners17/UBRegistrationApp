@@ -4,21 +4,6 @@
 
 <h2>{{ title }}</h2>
 <br/>
-<table border="1" cellpadding="4">
-    <tr>
-        <th style="text-align:left">User ID</th>
-        <th style="text-align:left">New Password</th>
-        
-    </tr>
-    {% for item in query_results %}
-    <tr> 
-         <td style="text-align:left">{{ item.0 }}</td>
-         <td style="text-align:left">{{ item.1 }}</td>
-    </tr>
-    {% endfor %}
-    </table>
-<br />
-<br />
 
 <div>
     <form method="post"> 

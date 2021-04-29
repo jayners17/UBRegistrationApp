@@ -11,6 +11,7 @@ from .forms import *
 from app import models
 from .models import *
 from mysql.connector import connect, Error
+import re
 
 
 #complete
@@ -153,7 +154,7 @@ def admin1(request, id):
             if (option == 'View Users'):    
                 return redirect('/viewUsers/')
             elif (option == 'Change User Information'):
-                return redirect('')
+                return redirect('/changeUserInfo/')
             elif (option == 'View Students'):
                 return redirect('/viewStudents/')
             elif (option == 'View Courses'): #Done
@@ -598,7 +599,7 @@ def changeUserInfo(request):
             if (option == 'Update'):   #Done
                 return redirect('/updateUserInfo/')
             elif (option == 'Add'):
-                return redirect('/addUser/' + str(role) + '/')
+                return redirect('/addUser/' + role + '/')
     else:
         form = ChangeUserInfoForm() # An unbound form
 
@@ -612,21 +613,21 @@ def changeUserInfo(request):
         }
     )
 
-#incomplete
+#complete
 def updateUserInfo(request):
-    """Renders the updateCourse page."""
+    """Renders the updateUserInfo page."""
     assert isinstance(request, HttpRequest)
 
     if request.method == 'POST': # If the form has been submitted...
         
         form = UpdateUserInfoForm(request.POST) # A form bound to the POST data
-        
-        userID = form.cleaned_data['userID']
-        newPass = form.cleaned_data['newPass']
 
         if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data    
-            
+            user = form.cleaned_data['user']
+            newPass = form.cleaned_data['newPass']
+
+
             try:
                 with connect(
                     host="127.0.0.1",
@@ -636,10 +637,10 @@ def updateUserInfo(request):
                 ) as connection:
                     with connection.cursor() as cursor:
                         stringC = 'UPDATE Login SET '
-                        stringC += f'Login.Password = {str(newPass)}'
-                        stringC += 'WHERE Login.ID_Number = \'' + str(userID) + '\''
+                        stringC += 'Login.Password = "%s" ' % (newPass)
+                        stringC += 'WHERE Login.Username = "%s"' % (user)
                         cursor.execute(stringC)
-                        
+                        connection.commit()
             except Error as e:
                 print(e)
            
@@ -657,14 +658,13 @@ def updateUserInfo(request):
         }
     )
 
-#incomplete
-def addUser(request,role):
+#complete
+def addUser(request, role):
     """Renders the addUser page."""
     assert isinstance(request, HttpRequest)
 
-    if request.method == 'POST': # If the form has been submitted...
-        
-        if str(role) == "Student":
+    if role == "Student":
+        if request.method == 'POST': # If the form has been submitted...
             
             form = AddUserForm(request.POST) # A form bound to the POST data
             
@@ -676,6 +676,9 @@ def addUser(request,role):
                 username = form.cleaned_data['username']
                 password = form.cleaned_data['password']
 
+                advisor = Login.objects.filter(username=adv_ID)
+                print(str(advisor[0].id_number))
+
                 try:
                     with connect(
                         host="127.0.0.1",
@@ -684,16 +687,18 @@ def addUser(request,role):
                         database='UBRegistrationDB',
                     ) as connection:
                         with connection.cursor() as cursor:
-                            stringA = f'INSERT INTO Login (ID_Number, Username, Password) VALUES ({int(ID)}, {str(username)}, {str(password)}") '
+                            stringA = 'INSERT INTO Login VALUES ("%d", "%s", "%s")' % (ID, username, password)
                             cursor.execute(stringA)
                             connection.commit()
-                            stringA = f'INSERT INTO Student (ID_Number, Name, Adv_ID_Num) VALUES ({int(ID)}, {str(name)}, {int(adv_ID)}) '
+                            stringA = 'INSERT INTO Student VALUES ("%d", "%s", "%d")' % (ID, name, advisor[0].id_number) 
                             cursor.execute(stringA)
                             connection.commit()
                 except Error as e:
                     print(e)
-            
-        elif str(role) == "Advisor":
+        else:
+            form = AddUserForm() # An unbound form   
+    elif role == "Advisor":
+        if request.method == 'POST': # If the form has been submitted...
             
             form = AddUserAdvisorForm(request.POST) # A form bound to the POST data
             
@@ -713,18 +718,19 @@ def addUser(request,role):
                         database='UBRegistrationDB',
                     ) as connection:
                         with connection.cursor() as cursor:
-                            stringA = f'INSERT INTO Login (ID_Number, Username, Password) VALUES ({int(ID)}, {str(username)}, {str(password)}") '
+                            stringA = 'INSERT INTO Login VALUES ("%d", "%s", "%s")' % (ID, username, password)
                             cursor.execute(stringA)
                             connection.commit()
-                            stringA = f'INSERT INTO Advisor (ID_Number, Name, DName) VALUES ({int(ID)}, {str(name)}, {str(DName)}) '
+                            stringA = 'INSERT INTO Advisor VALUES ("%d", "%s", "%s")' % (ID, name, DName) 
                             cursor.execute(stringA)
                             connection.commit()
                 except Error as e:
                     print(e)
         
-        
-        elif str(role) == "Admin":
-            
+        else:
+            form = AddUserAdvisorForm() # An unbound form
+    elif role == "Admin":
+        if request.method == 'POST': # If the form has been submitted...
             form = AddUserAdminForm(request.POST) # A form bound to the POST data
             
             if form.is_valid(): # All validation rules pass
@@ -742,19 +748,16 @@ def addUser(request,role):
                         database='UBRegistrationDB',
                     ) as connection:
                         with connection.cursor() as cursor:
-                            stringA = f'INSERT INTO Login (ID_Number, Username, Password) VALUES ({int(ID)}, {str(username)}, {str(password)}") '
+                            stringA = 'INSERT INTO Login VALUES ("%s", "%s", "%s")' % (str(ID), username, password)
                             cursor.execute(stringA)
                             connection.commit()
-                            stringA = f'INSERT INTO Admin (ID_Number, Name) VALUES ({int(ID)}, {str(name)}) '
+                            stringA = 'INSERT INTO Admin VALUES ("%s", "%s")' % (str(ID), name)
                             cursor.execute(stringA)
                             connection.commit()
                 except Error as e:
                     print(e)
-        
-        
-           
-    else:
-        form = AddUserForm() # An unbound form
+        else:
+            form = AddUserAdminForm() # An unbound form
 
     return render(
         request,

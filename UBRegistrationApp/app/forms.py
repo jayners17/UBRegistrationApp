@@ -86,27 +86,27 @@ class ChangeUserInfoForm(forms.Form):
     choice = forms.ChoiceField(label='Options Menu', choices=CHANGE_MENU, required=True)
     role = forms.ChoiceField(label='Role', choices=LOGIN_ROLES, required=True)
    
-class UpdateUserinfoForm(forms.Form):
-    userID = forms.CharField(label='User ID', required=True)
+class UpdateUserInfoForm(forms.Form):
+    user = forms.ModelChoiceField(label='User', required=True, queryset=Login.objects.all())
     newPass = forms.CharField(label='New Password', required=True)
    
 class AddUserForm(forms.Form):
     name = forms.CharField(label='Name', required=True)
-    ID = forms.CharField(label='ID', required=True)
-    adv_ID = forms.CharField(label='Advisor ID', required=True)
+    ID = forms.IntegerField(label='ID', required=True)
+    adv_ID = forms.ModelChoiceField(label='Advisor', required=True, queryset=Advisor.objects.all())
     username = forms.CharField(label='Username', required=True)
     password = forms.CharField(label='Password', required=True)
     
 class AddUserAdvisorForm(forms.Form):
     name = forms.CharField(label='Name', required=True)
-    ID = forms.CharField(label='ID', required=True)
-    DName = forms.CharField(label='Department Name', required=True)
+    ID = forms.IntegerField(label='ID', required=True)
+    DName = forms.ModelChoiceField(label='Department', required=True, queryset=Department.objects.all())
     username = forms.CharField(label='Username', required=True)
     password = forms.CharField(label='Password', required=True)
     
 class AddUserAdminForm(forms.Form):
     name = forms.CharField(label='Name', required=True)
-    ID = forms.CharField(label='ID', required=True)
+    ID = forms.IntegerField(label='ID', required=True)
     username = forms.CharField(label='Username', required=True)
     password = forms.CharField(label='Password', required=True)
     
