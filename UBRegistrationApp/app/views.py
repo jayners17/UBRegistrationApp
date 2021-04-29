@@ -592,7 +592,7 @@ def changeUserInfo(request):
             role = form.cleaned_data['role']
 
             if (option == 'Update'):   #Done
-                return redirect('/updateUserInfo/' + str(role) + '/')
+                return redirect('/updateUserInfo/')
             elif (option == 'Add'):
                 return redirect('/addUser/' + str(role) + '/')
     else:
@@ -609,7 +609,7 @@ def changeUserInfo(request):
     )
 
 #incomplete
-def updateUserInfo(request,role):
+def updateUserInfo(request):
     """Renders the updateCourse page."""
     assert isinstance(request, HttpRequest)
 
@@ -635,10 +635,6 @@ def updateUserInfo(request,role):
                         stringC += f'Login.Password = {str(newPass)}'
                         stringC += 'WHERE Login.ID_Number = \'' + str(userID) + '\''
                         cursor.execute(stringC)
-                        stringC = f'UPDATE {str(role)} SET '
-                        stringC += f'{str(role)}.Password = {str(newPass)}'
-                        stringC += f'WHERE {str(role)}.ID_Number = \'' + str(userID) + '\''
-                        cursor.execute(stringC)
                         
             except Error as e:
                 print(e)
@@ -659,7 +655,7 @@ def updateUserInfo(request,role):
 
 #incomplete
 def addUser(request,role):
-    """Renders the addCourse page."""
+    """Renders the addUser page."""
     assert isinstance(request, HttpRequest)
 
     if request.method == 'POST': # If the form has been submitted...
@@ -716,7 +712,7 @@ def addUser(request,role):
                         stringA = f'INSERT INTO Login (ID_Number, Username, Password) VALUES ({int(ID)}, {str(username)}, {str(password)}") '
                         cursor.execute(stringA)
                         connection.commit()
-                        stringA = f'INSERT INTO Advisor (ID_Number, Name, Adv_ID_Num) VALUES ({int(ID)}, {str(name)}, {int(DName)}) '
+                        stringA = f'INSERT INTO Advisor (ID_Number, Name, DName) VALUES ({int(ID)}, {str(name)}, {str(DName)}) '
                         cursor.execute(stringA)
                         connection.commit()
             except Error as e:
