@@ -667,6 +667,7 @@ def addUser(request,role):
         if str(role) == "Student":
             
             form = AddUserForm(request.POST) # A form bound to the POST data
+            
             if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
             name = form.cleaned_data['name']
@@ -694,7 +695,8 @@ def addUser(request,role):
             
         elif str(role) == "Advisor":
             
-            form = AddUserForm(request.POST) # A form bound to the POST data
+            form = AddUserAdvisorForm(request.POST) # A form bound to the POST data
+            
             if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
             name = form.cleaned_data['name']
@@ -723,7 +725,8 @@ def addUser(request,role):
         
         elif str(role) == "Admin":
             
-            form = AddUserForm(request.POST) # A form bound to the POST data
+            form = AddUserAdminForm(request.POST) # A form bound to the POST data
+            
             if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
             name = form.cleaned_data['name']
