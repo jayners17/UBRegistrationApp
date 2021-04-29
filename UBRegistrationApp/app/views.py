@@ -579,7 +579,7 @@ def viewUsers(request):
         }
     )
 
-#incomplete
+#complete
 def changeUserInfo(request,id):
     """Renders the changeCourses page."""
     assert isinstance(request, HttpRequest)
@@ -587,16 +587,16 @@ def changeUserInfo(request,id):
     if request.method == 'POST': # If the form has been submitted...
         form = ChangeUserInfoForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-#             # Process the data in form.cleaned_data
-#             option = form.cleaned_data['choice']
-#             course = form.cleaned_data['courses']
+            # Process the data in form.cleaned_data
+            option = form.cleaned_data['choice']
+            role = form.cleaned_data['role']
 
-#             if (option == 'Update'):   #Done
-#                 return redirect('/updateCourse/' + str(course) + '/')
-#             elif (option == 'Add'):
-#                 return redirect('/addCourse/')
-#     else:
-#         form = ChangeCoursesForm() # An unbound form
+            if (option == 'Update'):   #Done
+                return redirect('/updateUserInfo/')
+            elif (option == 'Add'):
+                return redirect('/addUser/')
+    else:
+        form = ChangeUserInfoForm() # An unbound form
 
     return render(
         request,
@@ -607,6 +607,90 @@ def changeUserInfo(request,id):
             'form': form
         }
     )
+
+#incomplete
+def updateUserInfo(request):
+    """Renders the updateCourse page."""
+    assert isinstance(request, HttpRequest)
+
+    if request.method == 'POST': # If the form has been submitted...
+        form = UpdateUserInfoForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            
+            userID = form.cleaned_data['userID']
+            newPass = form.cleaned_data['newPass']
+            try:
+                with connect(
+                    host="127.0.0.1",
+                    user='root',
+                    password='1234',
+                    database='UBRegistrationDB',
+                ) as connection:
+                    with connection.cursor() as cursor:
+                        stringC = 'UPDATE Login SET '
+                        stringC += 'Login.Password = "%s"' % (str(newPass))
+                        stringC += 'WHERE Login.ID_Number = \'' + str(userID) + '\''
+                        cursor.execute(stringC)
+            except Error as e:
+                print(e)
+           
+    else:
+        form = UpdateUserInfoForm() # An unbound form
+
+    return render(
+        request,
+        'app/updateUserInfo.html',
+        {
+            'title':'Update User Info',
+            'year':datetime.now().year,
+            'form': form,
+            'query_results': query_results
+        }
+    )
+
+#incomplete
+def addUser(request):
+    """Renders the addCourse page."""
+    assert isinstance(request, HttpRequest)
+
+    if request.method == 'POST': # If the form has been submitted...
+        form = AddUserForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            name = form.cleaned_data['name']
+            ID = form.cleaned_data['ID']
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            role = form.cleaned_data['role']
+
+            try:
+                with connect(
+                    host="127.0.0.1",
+                    user='root',
+                    password='1234',
+                    database='UBRegistrationDB',
+                ) as connection:
+                    with connection.cursor() as cursor:
+                        stringA = 'INSERT INTO Login (ID_Number, Username, Password) VALUES ("%d", "%s", "%s") ' % (int(ID), username, password)
+                        cursor.execute(stringA)
+                        connection.commit()
+            except Error as e:
+                print(e)
+           
+    else:
+        form = AddUserForm() # An unbound form
+
+    return render(
+        request,
+        'app/addUser.html',
+        {
+            'title':'Add A User',
+            'year':datetime.now().year,
+            'form': form,
+        }
+    )
+
 
 #complete
 def viewLoginInfo(request, id):
