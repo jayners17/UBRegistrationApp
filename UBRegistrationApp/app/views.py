@@ -649,7 +649,7 @@ def updateUserInfo(request):
             'title':'Update User Info',
             'year':datetime.now().year,
             'form': form,
-            'query_results': query_results
+            
         }
     )
 
