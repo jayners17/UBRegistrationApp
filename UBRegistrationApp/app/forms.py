@@ -82,6 +82,9 @@ class ChangeLoginForm(forms.Form):
     oldPass = forms.CharField(label='Old Password', required=True)
     newPass = forms.CharField(label='New Password', required=True)
 
-
+class ChangeUserInfoForm(forms.Form):
+#     inputUser = forms.CharField(label='Username', required=True)
+#     oldPass = forms.CharField(label='Old Password', required=True)
+#     newPass = forms.CharField(label='New Password', required=True)
 
 
