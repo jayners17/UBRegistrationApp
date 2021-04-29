@@ -12,6 +12,7 @@ from app import models
 from .models import *
 from mysql.connector import connect, Error
 
+
 #complete
 def home(request):
     """Renders the home page."""
@@ -116,8 +117,8 @@ def student(request, id):
 
             if (option == 'View Courses'):   #Done
                 return redirect('/viewCourses/')
-            elif (option == 'View Enrolled Courses'):
-                print("") #need to add
+            elif (option == 'View Enrolled Courses'): #Done
+                return redirect('/viewEnrolledCourses/' + str(id) + '/')
             elif (option == 'Course Sign Up'): #Done
                 return redirect('/enrollCourse/' + str(id) + '/')
             elif (option == 'View/Send Messages'): #Done
@@ -595,7 +596,7 @@ def viewLoginInfo(request):
         }
     )
 
-#incomplete
+#complete
 def viewEnrolledCourses(request, id):
     """Renders the viewEnrolledCourses page."""
     assert isinstance(request, HttpRequest)
@@ -608,12 +609,9 @@ def viewEnrolledCourses(request, id):
             database='UBRegistrationDB',
         ) as connection:
             with connection.cursor() as cursor:
-                query = '''
-                Select Course.CName, Course.SName, Professor, Room_Num, Num_Credits, Semester, Seats_Left, DName, St_ID_Num
-                From Course, Section, Enrolled
-                Where St_ID_Num = id AND Course.CName = Enrolled.CName
-                Order By Semester, CName, SName
-                '''
+                query = 'Select Course.DName, Course.CName, Section.SName, Professor, Room_Num, Num_Credits, Semester, Department.Name '
+                query += 'From Course, Section, Department, Enrolled '
+                query += 'where Course.DName = Department.DName AND Enrolled.St_ID_Num = "%s" AND Course.CName = Section.CName AND Course.CName = Enrolled.CName AND Section.SName = Enrolled.SName' % (str(id))
                 cursor.execute(query)
                 query_results = cursor.fetchall()
     except Error as e:
@@ -623,7 +621,7 @@ def viewEnrolledCourses(request, id):
         request,
         'app/viewEnrolledCourses.html',
         {
-            'title':'View Login Info',
+            'title':'View Enrolled Courses',
             'year':datetime.now().year,
             'query_results':query_results,
         }
