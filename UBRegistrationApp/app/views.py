@@ -35,20 +35,23 @@ def home(request):
 
             if (inRole == "Student"):
                 try:
-                    print('student')
+                    
                     tryS = Student.objects.filter(id_number = id_num)
+                    print(str(tryS[0].id_number))
                     return redirect('/student/'+ str(id_num) + '/')
                 except:
                     text = "Role is incorrect..."
             elif (inRole == 'Advisor'):
                 try:
                     tryA = Advisor.objects.filter(id_number = id_num)
+                    print(str(tryA[0].id_number))
                     return redirect('/advisor/'+ str(id_num) + '/')
                 except:
                     text = "Role is incorrect..."
             elif (inRole == 'Admin'):
                 try:
                     tryAd = Admin.objects.filter(id_number = id_num)
+                    print(str(tryAd[0].id_number))
                     return redirect('/admin1/'+ str(id_num) + '/')
                 except:
                     text = "Role is incorrect..."
@@ -148,7 +151,7 @@ def admin1(request, id):
             option = form.cleaned_data['choice']
 
             if (option == 'View Users'):    
-                return redirect('')
+                return redirect('/viewUsers/')
             elif (option == 'Change User Information'):
                 return redirect('')
             elif (option == 'View Courses'): #Done
@@ -517,18 +520,62 @@ def messages(request, id):
         }
     )
 
-#incomplete
+#complete
 def viewUsers(request):
     """Renders the viewUsers page."""
     assert isinstance(request, HttpRequest)
-    query_results = Login.objects.all()
+    
+    try:
+        with connect(
+            host="127.0.0.1",
+            user='root',
+            password='1234',
+            database='UBRegistrationDB',
+        ) as connection:
+            with connection.cursor() as cursor:
+                stringA = 'Select Login.ID_Number, Username, Password From Login, Admin where Login.ID_Number = Admin.ID_Number Order by Login.ID_Number Asc '
+                cursor.execute(stringA)
+                query_results_admins = cursor.fetchall()
+    except Error as e:
+        print(e)
+
+    try:
+        with connect(
+            host="127.0.0.1",
+            user='root',
+            password='1234',
+            database='UBRegistrationDB',
+        ) as connection:
+            with connection.cursor() as cursor:
+                stringA = 'Select Login.ID_Number, Username, Password From Login, Student where Login.ID_Number = Student.ID_Number Order by Login.ID_Number Asc '
+                cursor.execute(stringA)
+                query_results_students = cursor.fetchall()
+    except Error as e:
+        print(e)
+
+    try:
+        with connect(
+            host="127.0.0.1",
+            user='root',
+            password='1234',
+            database='UBRegistrationDB',
+        ) as connection:
+            with connection.cursor() as cursor:
+                stringA = 'Select Login.ID_Number, Username, Password From Login, Advisor where Login.ID_Number = Advisor.ID_Number Order by Login.ID_Number Asc'
+                cursor.execute(stringA)
+                query_results_advisors = cursor.fetchall()
+    except Error as e:
+        print(e)
+
     return render(
         request,
-        'app/viewCourses.html',
+        'app/viewUsers.html',
         {
             'title':'View Users',
             'year':datetime.now().year,
-            'query_results':query_results,
+            'query_results_admins':query_results_admins,
+            'query_results_advisors':query_results_advisors,
+            'query_results_students':query_results_students,
         }
     )
 
