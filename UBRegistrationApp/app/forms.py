@@ -93,10 +93,21 @@ class UpdateUserinfoForm(forms.Form):
 class AddUserForm(forms.Form):
     name = forms.CharField(label='Name', required=True)
     ID = forms.CharField(label='ID', required=True)
+    adv_ID = forms.CharField(label='Advisor ID', required=True)
     username = forms.CharField(label='Username', required=True)
     password = forms.CharField(label='Password', required=True)
     
+class AddUserAdvisorForm(forms.Form):
+    name = forms.CharField(label='Name', required=True)
+    ID = forms.CharField(label='ID', required=True)
+    DName = forms.CharField(label='Department Name', required=True)
+    username = forms.CharField(label='Username', required=True)
+    password = forms.CharField(label='Password', required=True)
     
-    
+class AddUserAdminForm(forms.Form):
+    name = forms.CharField(label='Name', required=True)
+    ID = forms.CharField(label='ID', required=True)
+    username = forms.CharField(label='Username', required=True)
+    password = forms.CharField(label='Password', required=True)
     
     
