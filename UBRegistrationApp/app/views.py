@@ -532,6 +532,35 @@ def viewUsers(request):
         }
     )
 
+#incomplete
+def changeUserInfo(request,id):
+    """Renders the changeCourses page."""
+    assert isinstance(request, HttpRequest)
+
+    if request.method == 'POST': # If the form has been submitted...
+        form = ChangeUserInfoForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+#             # Process the data in form.cleaned_data
+#             option = form.cleaned_data['choice']
+#             course = form.cleaned_data['courses']
+
+#             if (option == 'Update'):   #Done
+#                 return redirect('/updateCourse/' + str(course) + '/')
+#             elif (option == 'Add'):
+#                 return redirect('/addCourse/')
+#     else:
+#         form = ChangeCoursesForm() # An unbound form
+
+    return render(
+        request,
+        'app/changeUserInfo.html',
+        {
+            'title':'Change User Info',
+            'year':datetime.now().year,
+            'form': form
+        }
+    )
+
 #complete
 def viewLoginInfo(request, id):
     """Renders the viewLoginInfo page."""
@@ -558,6 +587,35 @@ def viewLoginInfo(request, id):
             'title':'View Login Info',
             'year':datetime.now().year,
             'query_results':query_results,
+        }
+    )
+
+#incomplete
+def changeLogin(request):
+    """Renders the changeLogin page."""
+    assert isinstance(request, HttpRequest)
+
+    if request.method == 'POST': # If the form has been submitted...
+        form = ChangeLoginForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+#             # Process the data in form.cleaned_data
+#             option = form.cleaned_data['choice']
+#             course = form.cleaned_data['courses']
+
+#             if (option == 'Update'):   #Done
+#                 return redirect('/updateCourse/' + str(course) + '/')
+#             elif (option == 'Add'):
+#                 return redirect('/addCourse/')
+#     else:
+#         form = ChangeCoursesForm() # An unbound form
+
+    return render(
+        request,
+        'app/changeLoginInfo.html',
+        {
+            'title':'Change Courses',
+            'year':datetime.now().year,
+            'form': form
         }
     )
 
