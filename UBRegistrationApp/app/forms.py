@@ -77,10 +77,10 @@ class SendMessageForm(forms.Form):
     toUser = forms.ModelChoiceField(label='To: ', required=True, queryset=Login.objects.all())
     text = forms.CharField(label='Message', required=True)
     
-# class ChangeLoginForm(forms.Form):
-#     choice = forms.ChoiceField(label='Options Menu', choices=CHANGE_MENU, required=True)
-#     courses = forms.ModelChoiceField(label='Courses', required=True, queryset=Section.objects.all())
-
+class ChangeLoginForm(forms.Form):
+    inputUser = forms.CharField(label='Username', required=True)
+    oldPass = forms.CharField(label='Old Password', required=True)
+    newPass = forms.CharField(label='New Password', required=True)
 
 
 
