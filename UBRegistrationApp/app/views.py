@@ -563,7 +563,7 @@ def viewLoginInfo(request, id):
         }
     )
 
-#complete
+#incomplete
 def viewEnrolledCourses(request, id):
     """Renders the viewEnrolledCourses page."""
     assert isinstance(request, HttpRequest)
