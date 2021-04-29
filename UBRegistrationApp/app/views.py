@@ -592,9 +592,9 @@ def changeUserInfo(request,id):
             role = form.cleaned_data['role']
 
             if (option == 'Update'):   #Done
-                return redirect('/updateUserInfo/')
+                return redirect('/updateUserInfo/' + str(role) + '/')
             elif (option == 'Add'):
-                return redirect('/addUser/')
+                return redirect('/addUser/' + str(role) + '/')
     else:
         form = ChangeUserInfoForm() # An unbound form
 
@@ -609,17 +609,20 @@ def changeUserInfo(request,id):
     )
 
 #incomplete
-def updateUserInfo(request):
+def updateUserInfo(request,role):
     """Renders the updateCourse page."""
     assert isinstance(request, HttpRequest)
 
     if request.method == 'POST': # If the form has been submitted...
+        
         form = UpdateUserInfoForm(request.POST) # A form bound to the POST data
+        
+        userID = form.cleaned_data['userID']
+        newPass = form.cleaned_data['newPass']
+
         if form.is_valid(): # All validation rules pass
-            # Process the data in form.cleaned_data
+            # Process the data in form.cleaned_data    
             
-            userID = form.cleaned_data['userID']
-            newPass = form.cleaned_data['newPass']
             try:
                 with connect(
                     host="127.0.0.1",
@@ -629,9 +632,14 @@ def updateUserInfo(request):
                 ) as connection:
                     with connection.cursor() as cursor:
                         stringC = 'UPDATE Login SET '
-                        stringC += 'Login.Password = "%s"' % (str(newPass))
+                        stringC += f'Login.Password = {str(newPass)}'
                         stringC += 'WHERE Login.ID_Number = \'' + str(userID) + '\''
                         cursor.execute(stringC)
+                        stringC = f'UPDATE {str(role)} SET '
+                        stringC += f'{str(role)}.Password = {str(newPass)}'
+                        stringC += f'WHERE {str(role)}.ID_Number = \'' + str(userID) + '\''
+                        cursor.execute(stringC)
+                        
             except Error as e:
                 print(e)
            
@@ -650,19 +658,22 @@ def updateUserInfo(request):
     )
 
 #incomplete
-def addUser(request):
+def addUser(request,role):
     """Renders the addCourse page."""
     assert isinstance(request, HttpRequest)
 
     if request.method == 'POST': # If the form has been submitted...
-        form = AddUserForm(request.POST) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
+        
+        if str(role) == "Student":
+            
+            form = AddUserForm(request.POST) # A form bound to the POST data
+            if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
             name = form.cleaned_data['name']
             ID = form.cleaned_data['ID']
+            adv_ID = form.cleaned_data['adv_ID']
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            role = form.cleaned_data['role']
 
             try:
                 with connect(
@@ -672,11 +683,72 @@ def addUser(request):
                     database='UBRegistrationDB',
                 ) as connection:
                     with connection.cursor() as cursor:
-                        stringA = 'INSERT INTO Login (ID_Number, Username, Password) VALUES ("%d", "%s", "%s") ' % (int(ID), username, password)
+                        stringA = f'INSERT INTO Login (ID_Number, Username, Password) VALUES ({int(ID)}, {str(username)}, {str(password)}") '
+                        cursor.execute(stringA)
+                        connection.commit()
+                        stringA = f'INSERT INTO Student (ID_Number, Name, Adv_ID_Num) VALUES ({int(ID)}, {str(name)}, {int(adv_ID)}) '
                         cursor.execute(stringA)
                         connection.commit()
             except Error as e:
                 print(e)
+            
+        elif str(role) == "Advisor":
+            
+            form = AddUserForm(request.POST) # A form bound to the POST data
+            if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            name = form.cleaned_data['name']
+            ID = form.cleaned_data['ID']
+            DName = form.cleaned_data['DName']
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            try:
+                with connect(
+                    host="127.0.0.1",
+                    user='root',
+                    password='1234',
+                    database='UBRegistrationDB',
+                ) as connection:
+                    with connection.cursor() as cursor:
+                        stringA = f'INSERT INTO Login (ID_Number, Username, Password) VALUES ({int(ID)}, {str(username)}, {str(password)}") '
+                        cursor.execute(stringA)
+                        connection.commit()
+                        stringA = f'INSERT INTO Advisor (ID_Number, Name, Adv_ID_Num) VALUES ({int(ID)}, {str(name)}, {int(DName)}) '
+                        cursor.execute(stringA)
+                        connection.commit()
+            except Error as e:
+                print(e)
+        
+        
+        elif str(role) == "Admin":
+            
+            form = AddUserForm(request.POST) # A form bound to the POST data
+            if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            name = form.cleaned_data['name']
+            ID = form.cleaned_data['ID']
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            try:
+                with connect(
+                    host="127.0.0.1",
+                    user='root',
+                    password='1234',
+                    database='UBRegistrationDB',
+                ) as connection:
+                    with connection.cursor() as cursor:
+                        stringA = f'INSERT INTO Login (ID_Number, Username, Password) VALUES ({int(ID)}, {str(username)}, {str(password)}") '
+                        cursor.execute(stringA)
+                        connection.commit()
+                        stringA = f'INSERT INTO Admin (ID_Number, Name) VALUES ({int(ID)}, {str(name)}) '
+                        cursor.execute(stringA)
+                        connection.commit()
+            except Error as e:
+                print(e)
+        
+        
            
     else:
         form = AddUserForm() # An unbound form
@@ -746,7 +818,7 @@ def changeLoginInfo(request):
                     ) as connection:
                         with connection.cursor() as cursor:
                             stringC = 'UPDATE Login SET '
-                            stringC += 'Login.Password = "%s"' % (str(newPass))
+                            stringC += f'Login.Password = {str(newPass)}'
                             stringC += 'WHERE Login.Username = \'' + str(inputUser) + '\''
                             cursor.execute(stringC)
                             connection.commit()
