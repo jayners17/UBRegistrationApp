@@ -84,6 +84,7 @@ class ChangeLoginInfoForm(forms.Form):
 
 class ChangeUserInfoForm(forms.Form):
     choice = forms.ChoiceField(label='Options Menu', choices=CHANGE_MENU, required=True)
+    role = forms.ChoiceField(label='Role', choices=LOGIN_ROLES, required=True)
    
 class UpdateUserinfoForm(forms.Form):
     userID = forms.CharField(label='User ID', required=True)
@@ -94,7 +95,6 @@ class AddUserForm(forms.Form):
     ID = forms.CharField(label='ID', required=True)
     username = forms.CharField(label='Username', required=True)
     password = forms.CharField(label='Password', required=True)
-    role = forms.ChoiceField(label='Role', choices=LOGIN_ROLES, required=True)
     
     
     
