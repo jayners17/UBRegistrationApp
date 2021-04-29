@@ -83,8 +83,19 @@ class ChangeLoginInfoForm(forms.Form):
     newPass = forms.CharField(label='New Password', required=True)
 
 class ChangeUserInfoForm(forms.Form):
-#     inputUser = forms.CharField(label='Username', required=True)
-#     oldPass = forms.CharField(label='Old Password', required=True)
-#     newPass = forms.CharField(label='New Password', required=True)
-
-
+    choice = forms.ChoiceField(label='Options Menu', choices=CHANGE_MENU, required=True)
+   
+class UpdateUserinfoForm(forms.Form):
+    userID = forms.CharField(label='User ID', required=True)
+    newPass = forms.CharField(label='New Password', required=True)
+   
+class AddUserForm(forms.Form):
+    username = forms.CharField(label='Username', required=True)
+    password = forms.CharField(label='Password', required=True)
+    ID = forms.CharField(label='ID', required=True)
+    role = forms.ChoiceField(label='Role', choices=LOGIN_ROLES, required=True)
+    
+    
+    
+    
+    
