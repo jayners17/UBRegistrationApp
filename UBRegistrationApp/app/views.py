@@ -637,7 +637,7 @@ def viewLoginInfo(request, id):
         }
     )
 
-#incomplete
+#complete
 def changeLoginInfo(request):
     """Renders the changeLogin page."""
     assert isinstance(request, HttpRequest)
