@@ -580,7 +580,7 @@ def viewUsers(request):
     )
 
 #complete
-def changeUserInfo(request,id):
+def changeUserInfo(request):
     """Renders the changeCourses page."""
     assert isinstance(request, HttpRequest)
 
