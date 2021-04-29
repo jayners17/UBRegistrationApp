@@ -65,6 +65,16 @@ class UpdateCourseForm(forms.Form):
     Seats = forms.IntegerField(label='Seats Left', required=False)
     CollegeName = forms.CharField(label='College Name', required=False)
 
+class AddCourseForm(forms.Form):
+    DeptName = forms.CharField(label='Department Name', required=True)
+    CourseName = forms.CharField(label='Course Name', required=True)
+    SectionName = forms.CharField(label='Section Name', required=True)
+    ProfName = forms.CharField(label='Professor Name', required=True)
+    RoomNum = forms.CharField(label='Room Number', required=True)
+    Credits = forms.IntegerField(label='Credits', required=True)
+    Semester = forms.CharField(label='Semester', required=True)
+    Seats = forms.IntegerField(label='Seats Left', required=True)
+
 class EnrollCourseForm(forms.Form):
     courses = forms.ModelChoiceField(label='Courses', required=True, queryset=Section.objects.all())
 

@@ -256,7 +256,7 @@ def changeCourses(request):
             elif (option == 'Delete'):
                 print("") #need to add
             elif (option == 'Add'):
-                print("") #need to add
+                return redirect('/addCourse/')
     else:
         form = ChangeCoursesForm() # An unbound form
 
@@ -338,16 +338,19 @@ def updateCourse(request, sectionObj):
                         stringS += 'Enrolled.CName = "%s", Enrolled.SName = "%s" ' % (name, secname)
                         stringS += 'WHERE Enrolled.CName = \'' + str(query[0].cname) + '\' AND Enrolled.SName = \'' + str(query[0].sname) + '\''
                         cursor.execute(stringE)
+                        connection.commit()
                         print('enrolled')
                         stringC = 'UPDATE Course SET '
                         stringC += 'Course.CName = "%s", Course.Room_Num = "%s", Course.Professor = "%s", Course.Num_Credits = "%s" ' % (name, room, prof, str(credits))
                         stringC += 'WHERE Course.CName = \'' + str(query[0].cname) + '\''
                         cursor.execute(stringC)
+                        connection.commit()
                         print('course')
                         stringS = 'UPDATE Section SET '
                         stringS += 'Section.CName = "%s", Section.SName = "%s", Section.Semester = "%s", Section.Seats_Left = "%s" ' % (name, secname, semest, str(seats))
                         stringS += 'WHERE Section.CName = \'' + str(query[0].cname) + '\' AND Section.SName = \'' + str(query[0].sname) + '\''
                         cursor.execute(stringS)
+                        connection.commit()
                         print('section')
             except Error as e:
                 print(e)
@@ -363,6 +366,54 @@ def updateCourse(request, sectionObj):
             'year':datetime.now().year,
             'form': form,
             'query_results': query_results
+        }
+    )
+
+def addCourse(request):
+    """Renders the addCourse page."""
+    assert isinstance(request, HttpRequest)
+
+    if request.method == 'POST': # If the form has been submitted...
+        form = AddCourseForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            dept = form.cleaned_data['DeptName']
+            name = form.cleaned_data['CourseName']
+            secname = form.cleaned_data['SectionName']
+            prof = form.cleaned_data['ProfName']
+            room = form.cleaned_data['RoomNum']
+            credits = form.cleaned_data['Credits']
+            semest = form.cleaned_data['Semester']
+            seats = form.cleaned_data['Seats']
+
+            
+            try:
+                with connect(
+                    host="127.0.0.1",
+                    user='root',
+                    password='1234',
+                    database='UBRegistrationDB',
+                ) as connection:
+                    with connection.cursor() as cursor:
+                        stringA = 'INSERT INTO Course (CName, Room_Num, Professor, Num_Credits, DName) VALUES ("%s", "%s", "%s", %d, "%s") ' % (name, room, prof, credits, dept)
+                        cursor.execute(stringA)
+                        connection.commit()
+                        stringB = 'INSERT INTO Section (CName, SName, Semester, Seats_Left) VALUES ("%s", "%s", "%s", %d) ' % (name, secname, semest, seats)
+                        cursor.execute(stringB)
+                        connection.commit()
+            except Error as e:
+                print(e)
+           
+    else:
+        form = AddCourseForm() # An unbound form
+
+    return render(
+        request,
+        'app/addCourse.html',
+        {
+            'title':'Add A Course',
+            'year':datetime.now().year,
+            'form': form,
         }
     )
 
@@ -405,6 +456,7 @@ def enrollCourse(request, id):
                     with connection.cursor() as cursor:
                         stringE = 'INSERT INTO Enrolled VALUES ("%s", "%s", "%s", "%s") ' % (id, query[0].cname, query[0].sname, courseQ[0].num_credits)
                         cursor.execute(stringE)
+                        connection.commit()
             except Error as e:
                 print(e)
            
