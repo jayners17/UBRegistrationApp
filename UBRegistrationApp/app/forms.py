@@ -17,7 +17,7 @@ STUDENT_MENU = [('View Courses', 'View Courses'), ('View Enrolled Courses', 'Vie
                 ('View Login Information','View Login Information'), ('Change Login Information','Change Login Information')]
 
 ADMIN_MENU = [('View Users', 'View Users'), ('Change User Information', 'Change User Information'), 
-              ('View Courses', 'View Courses'), ('Change Courses', 'Change Courses'), ('View/Send Messages', 'View/Send Messages')]
+              ('View Courses', 'View Courses'), ('Change Courses', 'Change Courses'), ('View/Send Messages', 'View/Send Messages'), ('View Login Information','View Login Information')]
 
 CHANGE_MENU = [('Update', 'Update'), ('Add', 'Add')]
 

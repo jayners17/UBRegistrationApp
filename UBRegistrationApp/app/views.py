@@ -85,8 +85,8 @@ def advisor(request, id):
                 return redirect('/viewCourses/')
             elif (option == 'View/Send Messages'): #Done
                 return redirect('/messages/' + str(id) + '/')
-            elif (option == 'View Login Information'):
-                print("") #need to add
+            elif (option == 'View Login Information'): #Done
+                return redirect('/viewLoginInfo/' + str(id) + '/')
             elif (option == 'Change Login Information'):
                 print("") #need to add
     else:
@@ -120,8 +120,8 @@ def student(request, id):
                 return redirect('/enrollCourse/' + str(id) + '/')
             elif (option == 'View/Send Messages'): #Done
                 return redirect('/messages/' + str(id) + '/')
-            elif (option == 'View Login Information'):
-                print("") #need to add
+            elif (option == 'View Login Information'): #Done
+                return redirect('/viewLoginInfo/' + str(id) + '/')
             elif (option == 'Change Login Information'):
                 print("") #need to add
     else:
@@ -157,6 +157,8 @@ def admin1(request, id):
                 return redirect('/changeCourses/')
             elif (option == 'View/Send Messages'): #Done
                 return redirect('/messages/' + str(id) + '/')
+            elif (option == 'View Login Information'): #Done
+                return redirect('/viewLoginInfo/' + str(id) + '/')
 
     else:
         form = AdminMenuForm() # An unbound form
@@ -530,7 +532,7 @@ def viewUsers(request):
         }
     )
 
-#incomplete
+#complete
 def viewLoginInfo(request, id):
     """Renders the viewLoginInfo page."""
     assert isinstance(request, HttpRequest)
@@ -543,11 +545,7 @@ def viewLoginInfo(request, id):
             database='UBRegistrationDB',
         ) as connection:
             with connection.cursor() as cursor:
-                query = '''
-                Select ID_Number, Username, Password
-                From Login
-                Where ID_Number = id
-                '''
+                query = 'Select ID_Number, Username, Password From Login Where ID_Number = "%s"' % (str(id))
                 cursor.execute(query)
                 query_results = cursor.fetchall()
     except Error as e:
@@ -563,7 +561,7 @@ def viewLoginInfo(request, id):
         }
     )
 
-#incomplete
+#complete
 def viewEnrolledCourses(request, id):
     """Renders the viewEnrolledCourses page."""
     assert isinstance(request, HttpRequest)

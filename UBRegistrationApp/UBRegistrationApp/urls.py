@@ -17,6 +17,7 @@ urlpatterns = [
     path('viewStudents/', views.viewStudents, name='viewStudents'),
     path('viewCourses/', views.viewCourses, name='viewCourses'),
     path('viewUsers/', views.viewUsers, name='viewUsers'),
+    path('viewLoginInfo/<id>/', views.viewLoginInfo, name='viewLoginInfo'),
     path('changeCourses/', views.changeCourses, name='changeCourses'),
     path('updateCourse/<sectionObj>/', views.updateCourse, name='updateCourse'),
     path('enrollCourse/<id>/', views.enrollCourse, name='enrollCourse'),
