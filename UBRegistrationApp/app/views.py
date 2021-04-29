@@ -638,29 +638,48 @@ def viewLoginInfo(request, id):
     )
 
 #incomplete
-def changeLogin(request):
+def changeLogin(request,id):
     """Renders the changeLogin page."""
     assert isinstance(request, HttpRequest)
 
     if request.method == 'POST': # If the form has been submitted...
         form = ChangeLoginForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-#             # Process the data in form.cleaned_data
-#             option = form.cleaned_data['choice']
-#             course = form.cleaned_data['courses']
-
-#             if (option == 'Update'):   #Done
-#                 return redirect('/updateCourse/' + str(course) + '/')
-#             elif (option == 'Add'):
-#                 return redirect('/addCourse/')
-#     else:
-#         form = ChangeCoursesForm() # An unbound form
-
+            # Process the data in form.cleaned_data
+            inputUser = form.cleaned_data['inputUser']
+            oldPass = form.cleaned_data['oldPass']
+            newPass = form.cleaned_data['newPass']
+            
+            try:
+                query = Login.objects.filter(username = inputUser, password = oldPass)
+                
+                try:
+                    with connect(
+                        host="127.0.0.1",
+                        user='root',
+                        password='1234',
+                        database='UBRegistrationDB',
+                    ) as connection:
+                        with connection.cursor() as cursor:
+                            stringC = 'UPDATE Login SET '
+                            stringC += 'Login.Password = "%s"' % (str(newPass))
+                            stringC += 'WHERE Login.Username = \'' + str(inputUser) + '\''
+                            cursor.execute(stringC)
+                            connection.commit()
+                except Error as e:
+                    print(e)
+                
+            except:
+                text = "Username and/or password are incorrect..."
+    else:
+        form = ChangeLoginInfoForm() # An unbound form
+    
+    
     return render(
         request,
         'app/changeLoginInfo.html',
         {
-            'title':'Change Courses',
+            'title':'Change Login Info',
             'year':datetime.now().year,
             'form': form
         }
