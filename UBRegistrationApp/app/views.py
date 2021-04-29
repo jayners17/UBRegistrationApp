@@ -237,7 +237,7 @@ def viewCourses(request):
         }
     )
 
-#Incomplete
+#complete
 def changeCourses(request):
     """Renders the changeCourses page."""
     assert isinstance(request, HttpRequest)
@@ -251,8 +251,6 @@ def changeCourses(request):
 
             if (option == 'Update'):   #Done
                 return redirect('/updateCourse/' + str(course) + '/')
-            elif (option == 'Delete'):
-                print("") #need to add
             elif (option == 'Add'):
                 return redirect('/addCourse/')
     else:
@@ -293,25 +291,17 @@ def updateCourse(request, sectionObj):
         print(e)
 
     for que in query_results:
-        name = que[1]
-        dept = que[0]
-        secname = que[2]
         prof = que[3]
         room = que[4]
         credits = que[5]
         semest = que[6]
         seats = que[7]
-        college = que[8]
 
 
     if request.method == 'POST': # If the form has been submitted...
         form = UpdateCourseForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
-            if (form.cleaned_data['CourseName'] != ''):
-                name = form.cleaned_data['CourseName']
-            if (form.cleaned_data['SectionName'] != ''):
-                secname = form.cleaned_data['SectionName']
             if (form.cleaned_data['ProfName'] != ''):
                 prof = form.cleaned_data['ProfName']
             if (form.cleaned_data['RoomNum'] != ''):
@@ -332,24 +322,16 @@ def updateCourse(request, sectionObj):
                     database='UBRegistrationDB',
                 ) as connection:
                     with connection.cursor() as cursor:
-                        stringE = 'UPDATE Enrolled SET '
-                        stringS += 'Enrolled.CName = "%s", Enrolled.SName = "%s" ' % (name, secname)
-                        stringS += 'WHERE Enrolled.CName = \'' + str(query[0].cname) + '\' AND Enrolled.SName = \'' + str(query[0].sname) + '\''
-                        cursor.execute(stringE)
-                        connection.commit()
-                        print('enrolled')
                         stringC = 'UPDATE Course SET '
-                        stringC += 'Course.CName = "%s", Course.Room_Num = "%s", Course.Professor = "%s", Course.Num_Credits = "%s" ' % (name, room, prof, str(credits))
+                        stringC += 'Course.Room_Num = "%s", Course.Professor = "%s", Course.Num_Credits = "%s" ' % (room, prof, str(credits))
                         stringC += 'WHERE Course.CName = \'' + str(query[0].cname) + '\''
                         cursor.execute(stringC)
                         connection.commit()
-                        print('course')
                         stringS = 'UPDATE Section SET '
-                        stringS += 'Section.CName = "%s", Section.SName = "%s", Section.Semester = "%s", Section.Seats_Left = "%s" ' % (name, secname, semest, str(seats))
+                        stringS += 'Section.Semester = "%s", Section.Seats_Left = "%s" ' % (semest, str(seats))
                         stringS += 'WHERE Section.CName = \'' + str(query[0].cname) + '\' AND Section.SName = \'' + str(query[0].sname) + '\''
                         cursor.execute(stringS)
                         connection.commit()
-                        print('section')
             except Error as e:
                 print(e)
            

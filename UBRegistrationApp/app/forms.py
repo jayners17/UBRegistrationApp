@@ -19,7 +19,7 @@ STUDENT_MENU = [('View Courses', 'View Courses'), ('View Enrolled Courses', 'Vie
 ADMIN_MENU = [('View Users', 'View Users'), ('Change User Information', 'Change User Information'), 
               ('View Courses', 'View Courses'), ('Change Courses', 'Change Courses'), ('View/Send Messages', 'View/Send Messages')]
 
-CHANGE_MENU = [('Update', 'Update'), ('Delete', 'Delete'), ('Add', 'Add')]
+CHANGE_MENU = [('Update', 'Update'), ('Add', 'Add')]
 
 LOGIN_ROLES = [('Student', 'Student'), ('Advisor', 'Advisor'), ('Admin', 'Admin')]
 
@@ -54,15 +54,11 @@ class ChangeCoursesForm(forms.Form):
     courses = forms.ModelChoiceField(label='Courses', required=True, queryset=Section.objects.all())
 
 class UpdateCourseForm(forms.Form):
-    #DeptName = forms.CharField(label='Department Name', required=False)
-    CourseName = forms.CharField(label='Course Name', required=False)
-    SectionName = forms.CharField(label='Section Name', required=False)
     ProfName = forms.CharField(label='Professor Name', required=False)
     RoomNum = forms.CharField(label='Room Number', required=False)
     Credits = forms.IntegerField(label='Credits', required=False)
     Semester = forms.CharField(label='Semester', required=False)
     Seats = forms.IntegerField(label='Seats Left', required=False)
-    CollegeName = forms.CharField(label='College Name', required=False)
 
 class AddCourseForm(forms.Form):
     DeptName = forms.CharField(label='Department Name', required=True)
