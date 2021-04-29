@@ -7,17 +7,15 @@
 
     <table border="1" cellpadding="4">
     <tr>
-        <th style="text-align:left"> </th>
-        <th style="text-align:left"> </th>
-        <th style="text-align:left"> </th>
-        <th style="text-align:left"> </th>
+        <th style="text-align:left">ID: </th>
+        <th style="text-align:left">Username </th>
+        <th style="text-align:left">Password </th>
     </tr>
     {% for item in query_results %}
     <tr> 
          <td style="text-align:left">{{ item.0 }}</td>
          <td style="text-align:left">{{ item.1 }}</td>
          <td style="text-align:left">{{ item.2 }}</td>
-         <td style="text-align:left">{{ item.3 }}</td>
     </tr>
     {% endfor %}
     </table>
