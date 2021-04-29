@@ -36,18 +36,21 @@ def home(request):
                 try:
                     print('student')
                     tryS = Student.objects.filter(id_number = id_num)
+                    print(str(tryS[0].id_number))
                     return redirect('/student/'+ str(id_num) + '/')
                 except:
                     text = "Role is incorrect..."
             elif (inRole == 'Advisor'):
                 try:
                     tryA = Advisor.objects.filter(id_number = id_num)
+                    print(str(tryA[0].id_number))
                     return redirect('/advisor/'+ str(id_num) + '/')
                 except:
                     text = "Role is incorrect..."
             elif (inRole == 'Admin'):
                 try:
                     tryAd = Admin.objects.filter(id_number = id_num)
+                    print(str(tryAd[0].id_number))
                     return redirect('/admin1/'+ str(id_num) + '/')
                 except:
                     text = "Role is incorrect..."
